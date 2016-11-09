@@ -13,19 +13,17 @@ On Ubuntu:
 $ xvfb-run --auto-servernum bundle exec rspec
 ```
 
-This produces RSpec output showing the results:
+This produces results in the form of RSpec output:
 
-```
-Login.gov Demo Site
-  should enforce https everywhere
-  should have a valid cert
-  initial access
-    is rejected w/out basic auth
-    is accepted w/ proper basic auth login
-  creating an account
-    has a link trail to the sign-up page
 
-Finished in 0.94019 seconds (files took 0.56581 seconds to load)
-5 examples, 0 failures
+Login.gov Demo Site  
+&nbsp;&nbsp;**should enforce https everywhere**  
+&nbsp;&nbsp;**should have a valid cert**  
+&nbsp;&nbsp;initial access  
+&nbsp;&nbsp;&nbsp;&nbsp;**is rejected w/out basic auth**  
+&nbsp;&nbsp;&nbsp;&nbsp;**is accepted w/ proper basic auth login**  
+&nbsp;&nbsp;creating an account  
+&nbsp;&nbsp;&nbsp;&nbsp;**has a link trail to the sign-up page**  
 
-```
+Finished in 0.94019 seconds (files took 0.56581 seconds to load)  
+**5 examples, 0 failures**
