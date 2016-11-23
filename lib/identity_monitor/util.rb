@@ -21,15 +21,19 @@ module IdentityMonitor
         sleep RECHECK_DELAY_SECONDS
       end
 
+      structured_return(result)
+    end
+
+    def time_is_up?(start:, timeout:)
+      Time.now > (start + timeout)
+    end
+
+    def structured_return(result)
       if result
         { success: true,  result: result }
       else
         { success: false, reason: TIMEOUT_REASON_MSG }
       end
-    end
-
-    def time_is_up?(start:, timeout:)
-      Time.now > (start + timeout)
     end
   end
 end
