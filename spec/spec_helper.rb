@@ -12,9 +12,11 @@ Capybara.run_server        = false
 Capybara::Webkit.configure(&:allow_unknown_urls)
 
 module IdentityMonitor
-  module_function
+  module Spec
+    module_function
 
-  def new_session
-    Capybara::Session.new(:webkit)
+    def new_session
+      Capybara::Session.new(:webkit)
+    end
   end
 end
