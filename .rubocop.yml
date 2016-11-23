@@ -4,6 +4,9 @@ AllCops:
     - 'db/**/*'
   TargetRubyVersion: 2.3
 
+Metrics/BlockLength:
+  Enabled: false
+
 Metrics/LineLength:
   Enabled: false
 
