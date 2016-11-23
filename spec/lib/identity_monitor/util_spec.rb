@@ -10,9 +10,14 @@ RSpec.describe IdentityMonitor::Util do
       expect { Util.retry_this(with_timeout: 5) }.to raise_error(LocalJumpError)
     end
 
-    it "returns failure status when block doesn't pass" do
+    it "returns failure when block doesn't pass" do
       result = Util.retry_this(with_timeout: 0.1) { false }
       expect( result.fetch(:success) ).to be false
+    end
+
+    it 'returns success when block passes' do
+      result = Util.retry_this(with_timeout: 0.1) { true }
+      expect( result.fetch(:success) ).to be true
     end
   end
 end
