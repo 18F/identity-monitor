@@ -3,6 +3,8 @@
 .bundle
 .config
 .env
+.tags
+*~
 
 coverage
 InstalledFiles
@@ -13,6 +15,7 @@ spec/reports
 test/tmp
 test/version_tmp
 tmp
+tags
 
 # YARD artifacts
 .yardoc

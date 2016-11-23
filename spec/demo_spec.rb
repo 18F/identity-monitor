@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'spec_helper'
 
 RSpec.describe 'Login.gov Demo Site', type: :feature, js: true do
@@ -12,14 +13,14 @@ RSpec.describe 'Login.gov Demo Site', type: :feature, js: true do
 
   context 'initial access' do
     it 'is rejected w/out basic auth' do
-      session = IM.new_session
+      session = IdentityMonitor::Spec.new_session
       session.visit("https://#{hostname}")
 
       expect(session.status_code).to be 401
     end
 
     it 'is accepted w/ proper basic auth login' do
-      session = IM.new_session
+      session = IdentityMonitor::Spec.new_session
       user = ENV.fetch('BASIC_AUTH_USERNAME')
       pass = ENV.fetch('BASIC_AUTH_PASSWORD')
 
@@ -31,7 +32,7 @@ RSpec.describe 'Login.gov Demo Site', type: :feature, js: true do
 
   describe 'creating an account' do
     it 'has a link trail to the sign-up page' do
-      session = IM.new_session
+      session = IdentityMonitor::Spec.new_session
       user = ENV.fetch('BASIC_AUTH_USERNAME')
       pass = ENV.fetch('BASIC_AUTH_PASSWORD')
 
