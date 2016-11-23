@@ -30,11 +30,11 @@ module IdentityMonitor
 
     # Create an Elixir-style union type return value.
     def structured_return(success:, result:)
-      if success
-        { success: true,  result: result }
-      else
-        { success: false, reason: TIMEOUT_REASON_MSG }
-      end
+      {
+        success: success
+      }.merge(
+        success ? { result: result } : { reason: TIMEOUT_REASON_MSG }
+      )
     end
   end
 end
