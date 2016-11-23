@@ -28,6 +28,9 @@ Style/DoubleNegation:
 Style/EmptyElse:
   Enabled: false
 
+Style/EmptyLines:
+  Enabled: false
+
 Style/GuardClause:
   Enabled: true
 
