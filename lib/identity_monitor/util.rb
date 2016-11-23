@@ -28,6 +28,7 @@ module IdentityMonitor
       Time.now > (start + timeout)
     end
 
+    # Create an Elixir-style union type return value.
     def structured_return(success:, result:)
       if success
         { success: true,  result: result }
