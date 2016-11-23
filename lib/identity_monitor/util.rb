@@ -21,19 +21,21 @@ module IdentityMonitor
         sleep RECHECK_DELAY_SECONDS
       end
 
-      structured_return(result: output)
+      structured_return(result: output, reason: TIMEOUT_REASON_MSG)
     end
 
+    # @param start   start time as a Time object
+    # @param timeout timeout duration expressed in seconds
     def time_is_up?(start:, timeout:)
       Time.now > (start + timeout)
     end
 
     # Create an Elixir-style union type return value.
-    def structured_return(result:)
+    def structured_return(result:, reason:)
       {
         success: !!result
       }.merge(
-        result ? { result: result } : { reason: TIMEOUT_REASON_MSG }
+        result ? { result: result } : { reason: reason }
       )
     end
   end
