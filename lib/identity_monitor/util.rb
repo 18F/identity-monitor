@@ -1,6 +1,8 @@
+# frozen_string_literal: true
 module IdentityMonitor
   module Util
-    RECHECK_DELAY_SECONDS = 0.25
+    RECHECK_DELAY_SECONDS  = 0.25
+    TIMEOUT_REASON_MESSAGE = 'Timed out'
 
     module_function
 
@@ -22,7 +24,7 @@ module IdentityMonitor
       if result
         { success: true,  result: result }
       else
-        { success: false, reason: 'Timed out' }
+        { success: false, reason: TIMEOUT_REASON_MSG }
       end
     end
 
