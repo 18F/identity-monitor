@@ -41,6 +41,9 @@ Style/RedundantSelf:
 Style/SignalException:
   Enabled: false
 
+Style/SpaceInsideParens:
+  Enabled: false
+
 Style/StringLiterals:
   EnforcedStyle: single_quotes
 

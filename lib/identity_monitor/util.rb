@@ -2,7 +2,7 @@
 module IdentityMonitor
   module Util
     RECHECK_DELAY_SECONDS  = 0.25
-    TIMEOUT_REASON_MESSAGE = 'Timed out'
+    TIMEOUT_REASON_MSG     = 'Timed out'
 
     module_function
 
