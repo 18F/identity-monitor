@@ -1,17 +1,15 @@
 RECHECK_DELAY_SECONDS = 0.25
 
-
 def time_is_up?(start:, timeout:)
   Time.now > (start + timeout)
 end
-
 
 # Retry a block of code until success
 #
 # @param with_timeout timeout in seconds
 # @param &block code to retry, which returns a falsey value on failure
 # @return {success: Boolean, result: Result if code was successful}
-def retry_this(with_timeout:, &block)
+def retry_this(with_timeout:)
   result = nil
   start_time = Time.now
 
@@ -27,7 +25,6 @@ def retry_this(with_timeout:, &block)
     { success: false, reason: 'Timed out' }
   end
 end
-
 
 # Test this
 result = retry_this(with_timeout: 5)

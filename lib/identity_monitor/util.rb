@@ -4,13 +4,12 @@ module IdentityMonitor
 
     module_function
 
-
     # Retry a block of code until success
     #
     # @param with_timeout timeout in seconds
     # @param &block code to retry, which returns a falsey value on failure
     # @return {success: Boolean, result: Result if code was successful}
-    def retry_this(with_timeout:, &block)
+    def retry_this(with_timeout:)
       result = nil
       start_time = Time.now
 
@@ -27,10 +26,8 @@ module IdentityMonitor
       end
     end
 
-
     def time_is_up?(start:, timeout:)
       Time.now > (start + timeout)
     end
-
   end
 end
