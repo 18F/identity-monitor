@@ -19,6 +19,9 @@ Style/Documentation:
 Style/DotPosition:
   Enabled: false
 
+Style/DoubleNegation:
+  Enabled: false
+
 Style/EmptyElse:
   Enabled: false
 

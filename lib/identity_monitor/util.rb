@@ -12,24 +12,24 @@ module IdentityMonitor
     # @param &block code to retry, which returns a falsey value on failure
     # @return {success: Boolean, result: Result if code was successful}
     def retry_this(with_timeout:)
-      result = nil
+      block_output = nil
       start_time = Time.now
 
       loop do
-        result = yield
-        break if result || time_is_up?(start: start_time, timeout: with_timeout)
+        block_output = yield
+        break if block_output || time_is_up?(start: start_time, timeout: with_timeout)
         sleep RECHECK_DELAY_SECONDS
       end
 
-      structured_return(result)
+      structured_return(success: !!block_output, result: block_output)
     end
 
     def time_is_up?(start:, timeout:)
       Time.now > (start + timeout)
     end
 
-    def structured_return(result)
-      if result
+    def structured_return(success:, result:)
+      if success
         { success: true,  result: result }
       else
         { success: false, reason: TIMEOUT_REASON_MSG }
