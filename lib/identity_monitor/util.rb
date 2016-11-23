@@ -12,16 +12,16 @@ module IdentityMonitor
     # @param &block code to retry, which returns a falsey value on failure
     # @return {success: Boolean, result: Result if code was successful}
     def retry_this(with_timeout:)
-      block_output = nil
+      output     = nil
       start_time = Time.now
 
       loop do
-        block_output = yield
-        break if block_output || time_is_up?(start: start_time, timeout: with_timeout)
+        output = yield
+        break if output || time_is_up?(start: start_time, timeout: with_timeout)
         sleep RECHECK_DELAY_SECONDS
       end
 
-      structured_return(success: !!block_output, result: block_output)
+      structured_return(result: output)
     end
 
     def time_is_up?(start:, timeout:)
@@ -29,11 +29,11 @@ module IdentityMonitor
     end
 
     # Create an Elixir-style union type return value.
-    def structured_return(success:, result:)
+    def structured_return(result:)
       {
-        success: success
+        success: !!result
       }.merge(
-        success ? { result: result } : { reason: TIMEOUT_REASON_MSG }
+        result ? { result: result } : { reason: TIMEOUT_REASON_MSG }
       )
     end
   end
