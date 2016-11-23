@@ -16,21 +16,19 @@ def retry_this(with_timeout:, &block)
   start_time = Time.now
 
   loop do
-    result = block.call
+    result = yield
     break if result || time_is_up?(start: start_time, timeout: with_timeout)
     sleep RECHECK_DELAY_SECONDS
   end
 
   if result
-    { success: true, result: result }
+    { success: true,  result: result }
   else
     { success: false, reason: 'Timed out' }
   end
 end
 
 
-result = retry_this(with_timeout: 10) do
-  (rand 11) == 10
-end
-
+# Test this
+result = retry_this(with_timeout: 5)
 puts "got result: #{result}"
