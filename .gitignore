@@ -4,6 +4,7 @@
 .config
 .env
 .tags
+*~
 
 coverage
 InstalledFiles
