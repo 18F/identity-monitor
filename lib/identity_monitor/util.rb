@@ -9,7 +9,7 @@ module IdentityMonitor
     # Retry a block of code until success
     #
     # @param with_timeout timeout in seconds
-    # @param &block code to retry, which returns a falsey value on failure
+    # @param block        code to retry, which returns a falsey value on failure
     # @return {success: Boolean, result: Result if code was successful}
     def retry_this(with_timeout:)
       output     = nil
@@ -31,6 +31,7 @@ module IdentityMonitor
     end
 
     # Create an Elixir-style union type return value.
+    # TODO: Refactor into a class if used more.
     def structured_return(result:, reason:)
       {
         success: !!result
