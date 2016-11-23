@@ -2,6 +2,10 @@
 require 'twilio-ruby'
 require 'sinatra'
 
+# http://www.sinatrarb.com/configuration.html
+set :port, 4567
+set :bind, '0.0.0.0'
+
 
 post '/sms' do
   body = params['Body']
