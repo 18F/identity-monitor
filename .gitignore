@@ -3,6 +3,7 @@
 .bundle
 .config
 .env
+.tags
 
 coverage
 InstalledFiles
