@@ -32,6 +32,14 @@ def idp_signup_url
   ENV['IDP_URL'] + '/sign_up/enter_email'
 end
 
+def idp_reset_password_url
+  ENV['IDP_URL'] + '/users/password/new'
+end
+
+def idp_logout_url
+  ENV['IDP_URL'] + '/api/saml/logout'
+end
+
 def sp_url
   ENV['SP_URL']
 end
@@ -82,6 +90,19 @@ def current_confirmation_link
   nil
 end
 
+def current_password_reset_link
+  inbox_unread.each do |email|
+    next unless email.subject == 'Reset your password'
+    msg = email.message.parts[0].body
+    url = msg.match(/(https:.+reset_password_token=[\w\-]+)/)[1]
+    if url
+      email.read!
+      return url
+    end
+  end
+  nil
+end
+
 def check_for_otp
   otp = nil
   counter = 0
@@ -116,6 +137,23 @@ def check_for_confirmation_link
   url
 end
 
+def check_for_password_reset_link
+  url = nil
+  counter = 0
+  while (!url) do
+    sleep 2
+    puts 'checking for password reset URL...'
+    url = current_password_reset_link
+    counter += 1
+    if counter >= 60
+      puts 'giving up password reset URL check ... timed out'
+      break
+    end
+  end
+  fail 'Cannot find password reset URL' unless url
+  url
+end
+
 def acknowledge_personal_key
   code_words = []
 
@@ -134,4 +172,24 @@ def acknowledge_personal_key
   click_on button_text, class: 'recovery-code-confirm'
 
   code_words
+end
+
+def create_new_account
+  visit idp_signup_url
+  email_address = random_email_address
+  fill_in 'user_email', with: email_address
+  click_on 'Submit'
+  confirmation_link = check_for_confirmation_link
+  visit confirmation_link
+  fill_in 'password_form_password', with: PASSWORD
+  click_on 'Submit'
+  fill_in 'two_factor_setup_form_phone', with: PHONE
+  click_on 'Send passcode'
+  otp = check_for_otp
+  fill_in 'code', with: otp
+  click_on 'Submit'
+  code_words = acknowledge_personal_key
+  expect(page).to have_content 'Welcome'
+  puts "created account for #{email_address} with personal key: #{code_words.join('-')}"
+  email_address
 end
