@@ -13,6 +13,16 @@ Capybara.default_max_wait_time = 5
 RSpec.configure do |config|
   config.color = true
   config.order = :random
+
+  config.before(:each) do
+    inbox_unread.each do |email|
+      puts "Marking #{email.subject} as unread"
+      email.read!
+    end
+    gmail.inbox.emails(:read).each do |email|
+      email.delete!
+    end
+  end
 end
 
 Dotenv.load
@@ -68,10 +78,10 @@ end
 def current_otp_from_email
   inbox_unread.each do |email|
     msg = email.message.parts[0].body
-    otp = msg.match(/(\d+) is your login.gov one-time passcode/)[1]
+    otp = msg.match(/(\d+) is your login.gov one-time passcode/)
     if otp
       email.read!
-      return otp
+      return otp[1]
     end
   end
   nil
@@ -81,10 +91,10 @@ def current_confirmation_link
   inbox_unread.each do |email|
     next unless email.subject == 'Confirm your email'
     msg = email.message.parts[0].body
-    url = msg.match(/(https:.+confirmation_token=[\w\-]+)/)[1]
+    url = msg.match(/(https:.+confirmation_token=[\w\-]+)/)
     if url
       email.read!
-      return url
+      return url[1]
     end
   end
   nil
@@ -94,64 +104,48 @@ def current_password_reset_link
   inbox_unread.each do |email|
     next unless email.subject == 'Reset your password'
     msg = email.message.parts[0].body
-    url = msg.match(/(https:.+reset_password_token=[\w\-]+)/)[1]
+    url = msg.match(/(https:.+reset_password_token=[\w\-]+)/)
     if url
       email.read!
-      return url
+      return url[1]
     end
   end
   nil
 end
 
-def check_for_otp
-  otp = nil
+def check_inbox_for_email_value(label)
+  value = nil
   counter = 0
-  while (!otp) do
+  while (!value) do
     sleep 2
-    puts 'checking for OTP...'
-    otp = current_otp_from_email
+    puts "checking for #{label} ..."
+    value = yield
     counter += 1
     if counter >= 60
-      puts 'giving up OTP check ... timed out'
+      puts "giving up #{label} check ... timed out"
       break
     end
   end
-  fail 'Cannot find OTP' unless otp
-  otp
+  fail "cannot find #{label}" unless value
+  value
+end
+
+def check_for_otp
+  check_inbox_for_email_value('OTP') do
+    current_otp_from_email
+  end
 end
 
 def check_for_confirmation_link
-  url = nil
-  counter = 0
-  while (!url) do
-    sleep 2
-    puts 'checking for confirmation URL...'
-    url = current_confirmation_link
-    counter += 1
-    if counter >= 60
-      puts 'giving up confirmation URL check ... timed out'
-      break
-    end
+  check_inbox_for_email_value('confirmation URL') do
+    current_confirmation_link
   end
-  fail 'Cannot find confirmation URL' unless url
-  url
 end
 
 def check_for_password_reset_link
-  url = nil
-  counter = 0
-  while (!url) do
-    sleep 2
-    puts 'checking for password reset URL...'
-    url = current_password_reset_link
-    counter += 1
-    if counter >= 60
-      puts 'giving up password reset URL check ... timed out'
-      break
-    end
+  check_inbox_for_email_value('password reset URL') do
+    current_password_reset_link
   end
-  fail 'Cannot find password reset URL' unless url
-  url
 end
 
 def acknowledge_personal_key
