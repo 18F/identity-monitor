@@ -7,23 +7,24 @@ Automated tests for Login.gov
 To test Login.gov
 -----------------
 
-On Ubuntu:
+Create a Google email and voice account.
+
+Create a `.env` file with the Google credentials and phone number:
 
 ```bash
-$ xvfb-run --auto-servernum bundle exec rspec
+$ cp .env.example .env
+$ vi .env
 ```
 
-This produces results in the form of RSpec output:
+Install dependencies:
 
+```bash
+$ bundle install
+```
 
-Login.gov Demo Site  
-&nbsp;&nbsp;**should enforce https everywhere**  
-&nbsp;&nbsp;**should have a valid cert**  
-&nbsp;&nbsp;initial access  
-&nbsp;&nbsp;&nbsp;&nbsp;**is rejected w/out basic auth**  
-&nbsp;&nbsp;&nbsp;&nbsp;**is accepted w/ proper basic auth login**  
-&nbsp;&nbsp;creating an account  
-&nbsp;&nbsp;&nbsp;&nbsp;**has a link trail to the sign-up page**  
+Run the tests:
 
-Finished in 0.94019 seconds (files took 0.56581 seconds to load)  
-**5 examples, 0 failures**
+```bash
+$ make test
+```
+

@@ -1,63 +1,57 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    activemodel (5.0.0.1)
-      activesupport (= 5.0.0.1)
-    activesupport (5.0.0.1)
-      concurrent-ruby (~> 1.0, >= 1.0.2)
-      i18n (~> 0.7)
-      minitest (~> 5.1)
-      tzinfo (~> 1.1)
-    addressable (2.5.0)
+    addressable (2.5.1)
       public_suffix (~> 2.0, >= 2.0.2)
-    capybara (2.7.1)
+    capybara (2.13.0)
       addressable
       mime-types (>= 1.16)
       nokogiri (>= 1.3.3)
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
-    capybara-webkit (1.11.1)
-      capybara (>= 2.3.0, < 2.8.0)
-      json
-    concurrent-ruby (1.0.2)
-    diff-lcs (1.2.5)
-    dotenv (2.1.1)
-    faraday (0.9.2)
-      multipart-post (>= 1.2, < 3)
-    faraday_middleware (0.10.0)
-      faraday (>= 0.7.4, < 0.10)
-    i18n (0.7.0)
-    json (2.0.2)
+    cliver (0.3.2)
+    diff-lcs (1.3)
+    dotenv (2.2.0)
+    gmail (0.6.0)
+      gmail_xoauth (>= 0.3.0)
+      mail (>= 2.2.1)
+    gmail_xoauth (0.4.2)
+      oauth (>= 0.3.6)
+    json (2.0.3)
+    mail (2.6.4)
+      mime-types (>= 1.16, < 4)
     mime-types (3.1)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2016.0521)
     mini_portile2 (2.1.0)
-    minitest (5.9.1)
-    multipart-post (2.0.0)
-    nokogiri (1.6.8.1)
+    nokogiri (1.7.1)
       mini_portile2 (~> 2.1.0)
-    public_suffix (2.0.4)
+    oauth (0.5.1)
+    poltergeist (1.14.0)
+      capybara (~> 2.1)
+      cliver (~> 0.3.1)
+      websocket-driver (>= 0.2.0)
+    public_suffix (2.0.5)
     rack (2.0.1)
     rack-test (0.6.3)
       rack (>= 1.0)
+    rspec (3.5.0)
+      rspec-core (~> 3.5.0)
+      rspec-expectations (~> 3.5.0)
+      rspec-mocks (~> 3.5.0)
     rspec-core (3.5.4)
       rspec-support (~> 3.5.0)
     rspec-expectations (3.5.0)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.5.0)
+    rspec-mocks (3.5.0)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.5.0)
     rspec-support (3.5.0)
-    rspec-webservice_matchers (4.12.0)
-      faraday
-      faraday_middleware
-      rspec-core (~> 3.0)
-      rspec-expectations (~> 3.0)
-      validated_object (~> 1.1.0)
-    thread_safe (0.3.5)
-    tzinfo (1.2.2)
-      thread_safe (~> 0.1)
-    validated_object (1.1.0)
-      activemodel (>= 3.2.21)
+    websocket-driver (0.6.5)
+      websocket-extensions (>= 0.1.0)
+    websocket-extensions (0.1.2)
     xpath (2.0.0)
       nokogiri (~> 1.3)
 
@@ -66,12 +60,14 @@ PLATFORMS
 
 DEPENDENCIES
   capybara
-  capybara-webkit
   dotenv
-  rspec-webservice_matchers
+  gmail
+  json
+  poltergeist
+  rspec
 
 RUBY VERSION
-   ruby 2.3.1p112
+   ruby 2.3.3p222
 
 BUNDLED WITH
-   1.13.6
+   1.14.6
