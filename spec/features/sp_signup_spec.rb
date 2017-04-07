@@ -24,7 +24,7 @@ describe 'SP initiated sign up' do
     click_on 'Submit'
 
     fill_in 'two_factor_setup_form_phone', with: PHONE
-    click_on 'Send passcode'
+    click_send_otp
 
     otp = check_for_otp
 
