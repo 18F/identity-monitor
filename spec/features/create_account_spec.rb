@@ -1,16 +1,8 @@
 require 'spec_helper'
 
-describe 'SP initiated sign up', type: :feature, js: true do
-  it 'creates new account via SP' do
-    page.driver.basic_authorize(basic_auth_user, basic_auth_pass)
-
-    visit sp_url
-    find(:css, 'button').click
-
-    expect(current_url).to match(/https:\/\/idp/)
-
-    click_on 'Get started'
-
+describe 'create account' do
+  it 'creates new account directly' do
+    visit idp_signup_url
     email_address = random_email_address
     fill_in 'user_email', with: email_address
     click_on 'Submit'
@@ -28,19 +20,15 @@ describe 'SP initiated sign up', type: :feature, js: true do
 
     otp = check_for_otp
 
-    fill_in 'code', with: otp 
+    fill_in 'code', with: otp
     click_on 'Submit'
 
     expect(page).to have_content 'Here is your personal key'
 
     code_words = acknowledge_personal_key
 
+    expect(page).to have_content 'Welcome'
+
     puts "created account for #{email_address} with personal key: #{code_words.join('-')}"
-
-    expect(current_path).to eq '/sign_up/completed'
-
-    click_on 'Continue to Demo SP Application'
-
-    expect(current_url).to match(/https:\/\/sp/)
   end
 end

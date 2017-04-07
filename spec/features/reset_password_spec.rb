@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'password reset', type: :feature, js: true do
+describe 'password reset' do
   it 'resets password at LOA1' do
     email_address = create_new_account
 
