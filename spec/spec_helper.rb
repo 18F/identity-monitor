@@ -44,6 +44,10 @@ end
 ##############################################################################
 # helper methods
 
+def idp_signin_url
+   ENV['IDP_URL']
+end
+
 def idp_signup_url
   ENV['IDP_URL'] + '/sign_up/enter_email'
 end

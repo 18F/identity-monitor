@@ -40,6 +40,6 @@ module IdpHelpers
     code_words = acknowledge_personal_key
     expect(page).to have_content 'Welcome'
     puts "created account for #{email_address} with personal key: #{code_words.join('-')}"
-    email_address
+    { email_address: email_address, personal_key: code_words.join('-') }
   end
 end
