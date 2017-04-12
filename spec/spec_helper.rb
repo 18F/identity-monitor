@@ -1,5 +1,5 @@
 # use . in include path
-$:.unshift File.dirname(__FILE__) + '/../.'
+$LOAD_PATH.unshift File.dirname(__FILE__) + '/../.'
 require 'json'
 require 'pp'
 require 'dotenv'
@@ -10,7 +10,7 @@ require 'capybara/poltergeist'
 Capybara.javascript_driver = :poltergeist
 Capybara.default_max_wait_time = 5
 
-Dir[('spec/support/**/*.rb')].sort.each { |file| require file }
+Dir['spec/support/**/*.rb'].sort.each { |file| require file }
 
 RSpec.configure do |config|
   config.color = true
@@ -37,15 +37,15 @@ PASSWORD = 'salty pickles'.freeze
 EMAIL = ENV['EMAIL']
 EMAIL_PASSWORD = ENV['EMAIL_PASSWORD']
 PHONE = ENV['PHONE']
-if !EMAIL or !EMAIL_PASSWORD or !PHONE
-  abort("Must set EMAIL EMAIL_PASSWORD and PHONE env vars -- did you create a .env file?")
+if !EMAIL || !EMAIL_PASSWORD || !PHONE
+  abort('Must set EMAIL EMAIL_PASSWORD and PHONE env vars -- did you create a .env file?')
 end
 
 ##############################################################################
 # helper methods
 
 def idp_signin_url
-   ENV['IDP_URL']
+  ENV['IDP_URL']
 end
 
 def idp_signup_url

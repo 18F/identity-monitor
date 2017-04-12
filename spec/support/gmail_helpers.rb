@@ -12,9 +12,7 @@ module GmailHelpers
       puts "Marking #{email.subject} as unread"
       email.read!
     end
-    gmail.inbox.emails(:read).each do |email|
-      email.delete!
-    end
+    gmail.inbox.emails(:read).each(&:delete!)
   end
 
   def current_otp_from_email
@@ -73,10 +71,11 @@ module GmailHelpers
     end
   end
 
+  # rubocop:disable MethodLength
   def check_inbox_for_email_value(label)
     value = nil
     counter = 0
-    while (!value) do
+    until value
       sleep 2
       puts "checking for #{label} ..."
       value = yield
@@ -86,8 +85,8 @@ module GmailHelpers
         break
       end
     end
-    fail "cannot find #{label}" unless value
+    raise "cannot find #{label}" unless value
     value
   end
+  # rubocop:enable MethodLength
 end
-

@@ -3,6 +3,8 @@ Identity Monitor
 
 Automated tests for Login.gov
 
+[![Code Climate](https://codeclimate.com/github/18F/identity-monitor/badges/gpa.svg)](https://codeclimate.com/github/18F/identity-monitor)
+
 
 To test Login.gov
 -----------------
