@@ -1,0 +1,17 @@
+# reek config overwrites defaults
+Attribute:
+  enabled: false
+IrresponsibleModule:
+  enabled: false
+DuplicateMethodCall:
+  enabled: false
+UtilityFunction:
+  enabled: false
+FeatureEnvy:
+  enabled: false
+TooManyStatements:
+  max_statements: 12
+  exclude:
+    - IdpHelpers#create_new_account
+TooManyMethods:
+  max_methods: 20

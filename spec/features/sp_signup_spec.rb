@@ -7,7 +7,7 @@ describe 'SP initiated sign up' do
     visit sp_url
     find(:css, 'button').click
 
-    expect(current_url).to match(/https:\/\/idp/)
+    expect(current_url).to match(%r{https://idp})
 
     click_on 'Get started'
 
@@ -28,7 +28,7 @@ describe 'SP initiated sign up' do
 
     otp = check_for_otp
 
-    fill_in 'code', with: otp 
+    fill_in 'code', with: otp
     click_on 'Submit'
 
     expect(page).to have_content 'Here is your personal key'
@@ -41,6 +41,6 @@ describe 'SP initiated sign up' do
 
     click_on 'Continue to Demo SP Application'
 
-    expect(current_url).to match(/https:\/\/sp/)
+    expect(current_url).to match(%r{https://sp})
   end
 end
