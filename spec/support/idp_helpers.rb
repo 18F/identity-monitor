@@ -12,15 +12,9 @@ module IdpHelpers
     end
 
     button_text = 'Continue'
-
     click_on button_text, class: 'personal-key-continue'
-
-    code_words.size.times do |index|
-      fill_in "personal-key-#{index}", with: code_words[index].downcase
-    end
-
+    fill_in 'personal-key', with: code_words.join('-')
     click_on button_text, class: 'personal-key-confirm'
-
     code_words
   end
 
