@@ -9,7 +9,7 @@ describe 'SP initiated sign up' do
 
     expect(current_url).to match(%r{https://idp})
 
-    click_on 'Get started'
+    click_on 'Create an account'
 
     email_address = random_email_address
     fill_in 'user_email', with: email_address
