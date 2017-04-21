@@ -6,7 +6,10 @@
 
 all: check
 
-check: lint test
+setup:
+	bundle check || bundle install
+
+check: setup lint test
 
 lint: $(CONFIG)
 	@echo "--- rubocop ---"
