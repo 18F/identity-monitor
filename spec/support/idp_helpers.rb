@@ -26,7 +26,7 @@ module IdpHelpers
     confirmation_link = check_for_confirmation_link
     visit confirmation_link
     fill_in 'password_form_password', with: PASSWORD
-    click_on 'Submit'
+    submit_password
     fill_in 'two_factor_setup_form_phone', with: PHONE
     click_send_otp
     otp = check_for_otp
@@ -38,4 +38,8 @@ module IdpHelpers
     { email_address: email_address, personal_key: code_words.join('-') }
   end
   # rubocop:enable MethodLength
+
+  def submit_password
+    click_on 'Continue'
+  end
 end
