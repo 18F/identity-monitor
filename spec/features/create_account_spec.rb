@@ -13,7 +13,7 @@ describe 'create account' do
     puts "Visiting #{confirmation_link}"
     visit confirmation_link
     fill_in 'password_form_password', with: PASSWORD
-    click_on 'Submit'
+    submit_password
 
     fill_in 'two_factor_setup_form_phone', with: PHONE
     click_send_otp
