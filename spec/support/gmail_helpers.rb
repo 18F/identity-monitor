@@ -18,7 +18,7 @@ module GmailHelpers
   def current_otp_from_email
     inbox_unread.each do |email|
       msg = email.message.parts[0].body
-      otp = msg.match(/(\d+) is your login.gov one-time security code/)
+      otp = msg.match(/(\d+) is your login.gov one-time/)
       if otp
         email.read!
         return otp[1]
