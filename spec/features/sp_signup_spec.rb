@@ -39,7 +39,7 @@ describe 'SP initiated sign up' do
 
     expect(current_path).to eq '/sign_up/completed'
 
-    click_on 'Continue to Demo SP Application'
+    click_on 'Continue'
 
     expect(current_url).to match(%r{https://sp})
   end
