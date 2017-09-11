@@ -1,11 +1,14 @@
 # use . in include path
 $LOAD_PATH.unshift File.dirname(__FILE__) + '/../.'
-require 'json'
-require 'pp'
+
+require 'capybara/rspec'
+require 'capybara/poltergeist'
 require 'dotenv'
 require 'gmail'
-require 'capybara/rspec'
+require 'json'
+require 'pp'
 require 'selenium/webdriver'
+require 'twilio-ruby'
 
 Capybara.register_driver :headless_chrome do |app|
   capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
@@ -22,6 +25,8 @@ Capybara.default_max_wait_time = 5
 
 Dir['spec/support/**/*.rb'].sort.each { |file| require file }
 
+Dotenv.load
+
 RSpec.configure do |config|
   config.color = true
   config.order = :random
@@ -36,16 +41,23 @@ RSpec.configure do |config|
   config.include GmailHelpers
   config.include IdpHelpers
   config.include SpHelpers
+  config.include TwilioHelpers
+
+  config.before(:each) do
+    inbox_clear
+  end
 end
 
-Dotenv.load
-
-PASSWORD = 'salty pickles'.freeze
 EMAIL = ENV['EMAIL']
 EMAIL_PASSWORD = ENV['EMAIL_PASSWORD']
-PHONE = ENV['PHONE']
-if !EMAIL || !EMAIL_PASSWORD || !PHONE
-  abort('Must set EMAIL EMAIL_PASSWORD and PHONE env vars -- did you create a .env file?')
+PASSWORD = 'salty pickles'.freeze
+TWILIO_PHONE = ENV['TWILIO_PHONE']
+TWILIO_SID = ENV['TWILIO_SID']
+TWILIO_TOKEN = ENV['TWILIO_TOKEN']
+
+if !EMAIL || !EMAIL_PASSWORD || !TWILIO_PHONE || !TWILIO_SID || !TWILIO_TOKEN
+  abort('Must set EMAIL EMAIL_PASSWORD, TWILIO_PHONE, TWILIO_SID, and TWILIO_TOKEN env vars -- did'\
+  ' you create a .env file?')
 end
 
 ##############################################################################

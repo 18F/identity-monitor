@@ -12,10 +12,9 @@ describe 'sign in and out' do
 
     fill_in 'user_email', with: creds[:email_address]
     fill_in 'user_password', with: PASSWORD
+    otp_sent_at = Time.now
     click_on 'Next'
-
-    otp = check_for_otp(option: 'sms')
-    fill_in 'code', with: otp
+    fill_in 'code', with: get_otp(otp_sent_at)
     click_on 'Submit'
 
     expect(page).to have_content 'Welcome'

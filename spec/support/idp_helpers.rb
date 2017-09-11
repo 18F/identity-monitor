@@ -20,9 +20,11 @@ module IdpHelpers
   def create_new_account_with_sms
     create_new_account_up_until_password
     click_on 'Continue' # choose default SMS option
-    fill_in 'user_phone_form_phone', with: PHONE
+    fill_in 'user_phone_form_phone', with: TWILIO_PHONE
+    otp_sent_at = Time.now
     click_send_otp
-    otp = check_for_otp(option: 'sms')
+    #otp = check_for_otp(option: 'sms')
+    otp = get_otp(otp_sent_at)
     fill_in 'code', with: otp
     click_on 'Submit'
     code_words = acknowledge_personal_key
@@ -34,9 +36,11 @@ module IdpHelpers
     create_new_account_up_until_password
     find("label[for='two_factor_options_form_selection_voice']").click
     click_on 'Continue'
-    fill_in 'user_phone_form_phone', with: PHONE
+    fill_in 'user_phone_form_phone', with: TWILIO_PHONE
+    otp_sent_at = Time.now
     click_send_otp
-    otp = check_for_otp(option: 'voice')
+    #otp = check_for_otp(option: 'voice')
+    otp = get_otp(otp_sent_at)
     puts "code is being filled with otp: #{otp}"
     fill_in 'code', with: otp
     click_on 'Submit'
