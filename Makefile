@@ -20,4 +20,7 @@ lint: $(CONFIG)
 test:
 	bundle exec rspec
 
+build_nr_scripts:
+	npm run build-nr-scripts
+
 .PHONY: all lint test check

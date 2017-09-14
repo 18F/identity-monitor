@@ -1,0 +1,30 @@
+{
+  "name": "identity-monitor",
+  "version": "1.0.0",
+  "description": "Automated tests for Login.gov",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/18F/identity-monitor.git"
+  },
+  "scripts": {
+    "build-nr-scripts": "`npm bin`/webpack",
+    "lint": "`npm bin`/eslint new_relic_scripts/*.js webpack.config.js"
+  },
+  "author": "Jonathan Hooper",
+  "license": "CC0-1.0",
+  "private": true,
+  "dependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-es2015": "^6.24.1",
+    "chai": "^4.1.2",
+    "dotenv": "^4.0.0",
+    "eslint": "^4.6.1",
+    "eslint-config-airbnb-base": "^12.0.0",
+    "eslint-plugin-import": "^2.7.0",
+    "notp": "^2.0.3",
+    "selenium-webdriver": "^3.5.0",
+    "thirty-two": "^1.0.2",
+    "webpack": "^3.5.6"
+  }
+}

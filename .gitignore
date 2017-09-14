@@ -18,3 +18,8 @@ tmp
 .yardoc
 _yardoc
 doc/
+
+# NR Script Output
+node_modules
+new_relic_scripts_out
+npm-debug.log
