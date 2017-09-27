@@ -6,7 +6,7 @@ module TwilioHelpers
   def get_otp(after_date=nil)
     count = 0
     max_count = 5
-    twilio.messages.list(date_sent: after_date).first.body[0..5]
+    twilio.messages.list(date_sent_after: after_date).first.body[0..5]
   rescue NoMethodError
     count += 1
     puts "OTP not found yet, sleeping 2 seconds and trying again. Attempt #{count} of #{max_count}."
