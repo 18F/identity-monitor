@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe 'SP initiated sign up' do
+  before { inbox_clear }
+
   it 'creates new account via SP' do
     page.driver.basic_authorize(basic_auth_user, basic_auth_pass)
 
