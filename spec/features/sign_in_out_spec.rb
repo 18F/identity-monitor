@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe 'sign in and out' do
+  before { inbox_clear }
+
   it 'creates account, signs out, signs back in' do
     creds = create_new_account
 

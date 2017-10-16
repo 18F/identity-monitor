@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe 'create account' do
+  before { inbox_clear }
+
   it 'creates new account directly' do
     visit idp_signup_url
     email_address = random_email_address

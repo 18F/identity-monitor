@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe 'password reset' do
+  before { inbox_clear }
+
   it 'resets password at LOA1' do
     creds = create_new_account
 
