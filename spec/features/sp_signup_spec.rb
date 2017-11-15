@@ -44,5 +44,6 @@ describe 'SP initiated sign up' do
     click_on 'Continue'
 
     expect(current_url).to match(%r{https://sp})
+    expect(page).to have_content(email_address)
   end
 end
