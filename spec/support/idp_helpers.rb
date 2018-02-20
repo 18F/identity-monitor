@@ -1,6 +1,6 @@
 module IdpHelpers
   def click_send_otp
-    click_on 'Send security code'
+    click_on 'Send code'
   end
 
   # rubocop:disable MethodLength
