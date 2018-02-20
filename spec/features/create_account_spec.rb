@@ -25,7 +25,7 @@ describe 'create account' do
     fill_in 'code', with: otp
     click_on 'Submit'
 
-    expect(page).to have_content 'Here is your personal key'
+    expect(page).to have_content 'Store your personal key'
 
     code_words = acknowledge_personal_key
 
