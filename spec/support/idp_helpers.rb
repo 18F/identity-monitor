@@ -3,7 +3,6 @@ module IdpHelpers
     click_on 'Send code'
   end
 
-  # rubocop:disable MethodLength
   def acknowledge_personal_key
     code_words = []
 
@@ -18,26 +17,49 @@ module IdpHelpers
     code_words
   end
 
-  def create_new_account
-    visit idp_signup_url
-    email_address = random_email_address
-    fill_in 'user_email', with: email_address
-    click_on 'Submit'
-    confirmation_link = check_for_confirmation_link
-    visit confirmation_link
-    fill_in 'password_form_password', with: PASSWORD
-    submit_password
+  def create_new_account_with_sms
+    create_new_account_up_until_password
+    click_on 'Continue' # choose default SMS option
     fill_in 'user_phone_form_phone', with: PHONE
     click_send_otp
-    otp = check_for_otp
+    otp = check_for_otp(option: 'sms')
     fill_in 'code', with: otp
     click_on 'Submit'
+    code_words = acknowledge_personal_key
+    puts "created account for #{email_address} with personal key: #{code_words.join('-')}"
+    { email_address: email_address, personal_key: code_words.join('-') }
+  end
+
+  def create_new_account_with_voice
+    create_new_account_up_until_password
+    find("label[for='two_factor_options_form_selection_voice']").click
+    click_on 'Continue'
+    fill_in 'user_phone_form_phone', with: PHONE
+    click_send_otp
+    otp = check_for_otp(option: 'voice')
+    puts "code is being filled with otp: #{otp}"
+    fill_in 'code', with: otp
+    click_on 'Submit'
+    expect(page).to have_content 'personal key'
     code_words = acknowledge_personal_key
     expect(page).to have_content 'Welcome'
     puts "created account for #{email_address} with personal key: #{code_words.join('-')}"
     { email_address: email_address, personal_key: code_words.join('-') }
   end
-  # rubocop:enable MethodLength
+
+  def create_new_account_up_until_password
+    fill_in 'user_email', with: email_address
+    click_on 'Submit'
+    confirmation_link = check_for_confirmation_link
+    puts "Visiting #{confirmation_link}"
+    visit confirmation_link
+    fill_in 'password_form_password', with: PASSWORD
+    submit_password
+  end
+
+  def email_address
+    @email_address ||= random_email_address
+  end
 
   def submit_password
     click_on 'Continue'

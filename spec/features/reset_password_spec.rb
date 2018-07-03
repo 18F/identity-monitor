@@ -4,7 +4,8 @@ describe 'password reset' do
   before { inbox_clear }
 
   it 'resets password at LOA1' do
-    creds = create_new_account
+    visit idp_signup_url
+    creds = create_new_account_with_sms
 
     visit idp_logout_url
 
