@@ -60,14 +60,6 @@ def sp_url
   ENV['SP_URL']
 end
 
-def basic_auth_user
-  URI.parse(ENV['IDP_URL']).user
-end
-
-def basic_auth_pass
-  URI.parse(ENV['IDP_URL']).password
-end
-
 def random_email_address
   random_str = SecureRandom.hex(3)
   EMAIL.dup.gsub(/@/, "+#{random_str}@")

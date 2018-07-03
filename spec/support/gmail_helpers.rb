@@ -1,6 +1,6 @@
 module GmailHelpers
   def gmail
-    @_gmail ||= Gmail.connect!(EMAIL, EMAIL_PASSWORD)
+    @gmail ||= Gmail.connect!(EMAIL, EMAIL_PASSWORD)
   end
 
   def inbox_unread
@@ -15,16 +15,36 @@ module GmailHelpers
     gmail.inbox.emails(:read).each(&:delete!)
   end
 
-  def current_otp_from_email
+  def current_otp_from_email(option)
     inbox_unread.each do |email|
       msg = email.message.parts[0].body
-      otp = msg.match(/(\d+) is your login.gov one-time/)
+      if option == 'sms'
+        otp = msg.match(/(\d+) is your login.gov one-time/)[1]
+      elsif option == 'voice'
+        otp = msg.match(/passcode is (\d+\s?\d+)\s?(one|to|for|hate)?/)
+        if otp[2]
+          last_digit = digit_from_word[otp[2]]
+          otp = otp[1] + last_digit
+        else
+          otp = otp[1].delete(' ')
+        end
+        puts "passcode as transcribed by Google Voice is: #{otp}"
+      end
       if otp
         email.read!
-        return otp[1]
+        return otp
       end
     end
     nil
+  end
+
+  def digit_from_word
+    {
+      'one' => '1',
+      'to' => '2',
+      'for' => '4',
+      'hate' => '8'
+    }
   end
 
   def current_confirmation_link
@@ -53,9 +73,9 @@ module GmailHelpers
     nil
   end
 
-  def check_for_otp
+  def check_for_otp(option:)
     check_inbox_for_email_value('OTP') do
-      current_otp_from_email
+      current_otp_from_email(option)
     end
   end
 
@@ -71,7 +91,6 @@ module GmailHelpers
     end
   end
 
-  # rubocop:disable MethodLength
   def check_inbox_for_email_value(label)
     value = nil
     counter = 0
@@ -80,7 +99,7 @@ module GmailHelpers
       puts "checking for #{label} ..."
       value = yield
       counter += 1
-      if counter >= 60
+      if counter >= 120
         puts "giving up #{label} check ... timed out"
         break
       end
@@ -88,5 +107,4 @@ module GmailHelpers
     raise "cannot find #{label}" unless value
     value
   end
-  # rubocop:enable MethodLength
 end
