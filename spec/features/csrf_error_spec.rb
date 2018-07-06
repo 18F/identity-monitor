@@ -8,7 +8,7 @@ describe 'CSRF errors' do
 
     fill_in 'password_reset_email_form_email', with: 'fake-email@login.gov'
 
-    page.driver.browser.remove_cookie 'AWSALB'
+    page.driver.browser.manage.delete_cookie 'AWSALB'
 
     click_on 'Continue'
 
