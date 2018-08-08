@@ -2,7 +2,6 @@
 $LOAD_PATH.unshift File.dirname(__FILE__) + '/../.'
 
 require 'capybara/rspec'
-require 'capybara/poltergeist'
 require 'dotenv'
 require 'gmail'
 require 'json'
@@ -50,6 +49,7 @@ end
 
 EMAIL = ENV['EMAIL']
 EMAIL_PASSWORD = ENV['EMAIL_PASSWORD']
+GOOGLE_VOICE_PHONE = ENV['GOOGLE_VOICE_PHONE']
 PASSWORD = 'salty pickles'.freeze
 TWILIO_PHONE = ENV['TWILIO_PHONE']
 TWILIO_SID = ENV['TWILIO_SID']

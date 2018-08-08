@@ -22,18 +22,18 @@ module GmailHelpers
         otp = msg.match(/(\d+) is your login.gov/)[1]
       elsif option == 'voice'
         otp = msg.match(/passcode is (\d+\s?\d+)\s?(one|to|for|hate)?/)
-        if otp[2]
-          last_digit = digit_from_word[otp[2]]
-          otp = otp[1] + last_digit
-        else
-          otp = otp[1].delete(' ')
-        end
-        puts "passcode as transcribed by Google Voice is: #{otp}"
       end
-      if otp
-        email.read!
-        return otp
+
+      next unless otp
+
+      if otp[2]
+        last_digit = digit_from_word[otp[2]]
+        otp = otp[1] + last_digit
+      else
+        otp = otp[1].delete(' ')
       end
+      email.read!
+      return otp
     end
     nil
   end

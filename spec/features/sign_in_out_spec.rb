@@ -9,13 +9,7 @@ describe 'sign in and out' do
 
     visit idp_logout_url
     visit idp_signin_url
-
-    fill_in 'user_email', with: creds[:email_address]
-    fill_in 'user_password', with: PASSWORD
-    otp_sent_at = Time.now
-    click_on 'Next'
-    fill_in 'code', with: get_otp(otp_sent_at)
-    click_on 'Submit'
+    sign_in_and_2fa(creds)
 
     expect(page).to have_content 'Welcome'
   end

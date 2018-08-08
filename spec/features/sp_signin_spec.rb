@@ -17,13 +17,7 @@ describe 'SP initiated sign in' do
 
     click_on 'Sign in'
 
-    fill_in 'user_email', with: creds[:email_address]
-    fill_in 'user_password', with: PASSWORD
-    click_on 'Next'
-
-    otp = check_for_otp(option: 'sms')
-    fill_in 'code', with: otp
-    click_on 'Submit'
+    sign_in_and_2fa(creds)
     click_on 'Continue'
 
     if sp_url == usa_jobs_url
