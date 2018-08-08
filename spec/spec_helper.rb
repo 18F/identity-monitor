@@ -7,7 +7,6 @@ require 'gmail'
 require 'capybara/rspec'
 require 'selenium/webdriver'
 
-
 Capybara.register_driver :headless_chrome do |app|
   capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
     chromeOptions: { args: %w[headless disable-gpu] }
@@ -36,6 +35,7 @@ RSpec.configure do |config|
 
   config.include GmailHelpers
   config.include IdpHelpers
+  config.include SpHelpers
 end
 
 Dotenv.load

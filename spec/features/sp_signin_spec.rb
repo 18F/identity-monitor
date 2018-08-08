@@ -1,9 +1,13 @@
 require 'spec_helper'
 
-describe 'SP initiated sign up' do
+describe 'SP initiated sign in' do
   before { inbox_clear }
 
-  it 'creates new account via SP' do
+  it 'redirects back to SP' do
+    visit idp_signup_url
+    creds = create_new_account_with_sms
+    visit idp_logout_url
+
     visit sp_url
     if sp_url == usa_jobs_url
       click_button 'Continue'
@@ -11,13 +15,15 @@ describe 'SP initiated sign up' do
       find(:css, '.btn').click
     end
 
-    expect(current_url).to match(%r{https://idp})
+    click_on 'Sign in'
 
-    click_on 'Create an account'
-    create_new_account_with_sms
+    fill_in 'user_email', with: creds[:email_address]
+    fill_in 'user_password', with: PASSWORD
+    click_on 'Next'
 
-    expect(current_path).to eq '/sign_up/completed'
-
+    otp = check_for_otp(option: 'sms')
+    fill_in 'code', with: otp
+    click_on 'Submit'
     click_on 'Continue'
 
     if sp_url == usa_jobs_url

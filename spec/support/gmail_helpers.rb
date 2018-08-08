@@ -19,7 +19,7 @@ module GmailHelpers
     inbox_unread.each do |email|
       msg = email.message.parts[0].body
       if option == 'sms'
-        otp = msg.match(/(\d+) is your login.gov one-time/)[1]
+        otp = msg.match(/(\d+) is your login.gov/)[1]
       elsif option == 'voice'
         otp = msg.match(/passcode is (\d+\s?\d+)\s?(one|to|for|hate)?/)
         if otp[2]
