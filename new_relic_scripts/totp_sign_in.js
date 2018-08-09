@@ -11,21 +11,25 @@ const {
 } = require('./support/browser');
 
 const {
-  IDP_URL,
-  NR_TOTP_SIGN_IN_EMAIL,
-  NR_TOTP_SIGN_IN_PASSWORD,
-  NR_TOTP_SIGN_IN_TOTP_SECRET,
+  LOWER_ENV,
+  INT_IDP_URL,
+  STAGING_IDP_URL,
+  TOTP_SIGN_IN_EMAIL,
+  TOTP_SIGN_IN_PASSWORD,
+  TOTP_SIGN_IN_TOTP_SECRET,
 } = process.env;
 
+const IDP_URL = eval(`${LOWER_ENV.toUpperCase()}_IDP_URL`);
+
 const generateTOTP = () => {
-  const decodedTOTPSecret = base32.decode(NR_TOTP_SIGN_IN_TOTP_SECRET);
+  const decodedTOTPSecret = base32.decode(TOTP_SIGN_IN_TOTP_SECRET);
   return notp.totp.gen(decodedTOTPSecret);
 };
 
 visitURL(IDP_URL).then(() =>
   fillOutSignInForm({
-    email: NR_TOTP_SIGN_IN_EMAIL,
-    password: NR_TOTP_SIGN_IN_PASSWORD,
+    email: TOTP_SIGN_IN_EMAIL,
+    password: TOTP_SIGN_IN_PASSWORD,
   })
 ).then(() =>
   submitForm()

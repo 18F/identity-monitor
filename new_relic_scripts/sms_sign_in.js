@@ -10,16 +10,20 @@ const {
 const { getOTPFromTwilio } = require('./support/twilio_helpers');
 
 const {
-  IDP_URL,
-  NR_SMS_SIGN_IN_EMAIL,
-  NR_SMS_SIGN_IN_PASSWORD,
-  NR_SMS_SIGN_IN_TWILIO_PHONE
+  LOWER_ENV,
+  INT_IDP_URL,
+  STAGING_IDP_URL,
+  SMS_SIGN_IN_EMAIL,
+  SMS_SIGN_IN_PASSWORD,
+  SMS_SIGN_IN_TWILIO_PHONE
 } = process.env;
+
+const IDP_URL = eval(`${LOWER_ENV.toUpperCase()}_IDP_URL`);
 
 visitURL(IDP_URL).then(() =>
   fillOutSignInForm({
-    email: NR_SMS_SIGN_IN_EMAIL,
-    password: NR_SMS_SIGN_IN_PASSWORD,
+    email: SMS_SIGN_IN_EMAIL,
+    password: SMS_SIGN_IN_PASSWORD,
   })
 ).then(() =>
   submitForm()
@@ -27,7 +31,7 @@ visitURL(IDP_URL).then(() =>
   verifyCurrentPath('/login/two_factor/sms?reauthn=false')
 ).then(() =>
   getOTPFromTwilio({
-    phoneNumber: NR_SMS_SIGN_IN_TWILIO_PHONE,
+    phoneNumber: SMS_SIGN_IN_TWILIO_PHONE,
     // 30 second padding necessary for Twilio to return the message
     sentAfter: new Date(Date.now() - 30000),
   })

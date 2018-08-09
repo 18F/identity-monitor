@@ -20,7 +20,7 @@ module IdpHelpers
   def create_new_account_with_sms
     create_new_account_up_until_password
     click_on 'Continue' # choose default SMS option
-    fill_in 'user_phone_form_phone', with: PHONE
+    fill_in 'user_phone_form_phone', with: GOOGLE_VOICE_PHONE
     click_send_otp
     otp = check_for_otp(option: 'sms')
     fill_in 'code', with: otp
@@ -34,17 +34,32 @@ module IdpHelpers
     create_new_account_up_until_password
     find("label[for='two_factor_options_form_selection_voice']").click
     click_on 'Continue'
-    fill_in 'user_phone_form_phone', with: PHONE
+    fill_in 'user_phone_form_phone', with: GOOGLE_VOICE_PHONE
     click_send_otp
     otp = check_for_otp(option: 'voice')
-    puts "code is being filled with otp: #{otp}"
     fill_in 'code', with: otp
     click_on 'Submit'
     expect(page).to have_content 'personal key'
     code_words = acknowledge_personal_key
-    expect(page).to have_content 'Welcome'
     puts "created account for #{email_address} with personal key: #{code_words.join('-')}"
     { email_address: email_address, personal_key: code_words.join('-') }
+  end
+
+  def create_new_account_with_totp
+    create_new_account_up_until_password
+    find("label[for='two_factor_options_form_selection_auth_app']").click
+    click_on 'Continue'
+    secret = find('#qr-code').text
+    fill_in 'code', with: generate_totp_code(secret)
+    click_button 'Submit'
+    expect(page).to have_content 'personal key'
+    code_words = acknowledge_personal_key
+    puts "created account for #{email_address} with personal key: #{code_words.join('-')}"
+    { email_address: email_address, personal_key: code_words.join('-') }
+  end
+
+  def generate_totp_code(secret)
+    ROTP::TOTP.new(secret).at(Time.now, true)
   end
 
   def create_new_account_up_until_password
@@ -63,5 +78,13 @@ module IdpHelpers
 
   def submit_password
     click_on 'Continue'
+  end
+
+  def sign_in_and_2fa(creds)
+    fill_in 'user_email', with: creds[:email_address]
+    fill_in 'user_password', with: PASSWORD
+    click_on 'Next'
+    fill_in 'code', with: check_for_otp(option: 'sms')
+    click_on 'Submit'
   end
 end

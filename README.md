@@ -40,20 +40,6 @@ Note that if your Google account uses 2FA, you will need to create an
 value of `EMAIL_PASSWORD`. To create the app password, Choose "Mail" from the
 "Select app" dropdown and "Other" from "Select device".
 
-ENV Vars
---------
-
-Create a `.env` file with the Google credentials and phone number:
-
-```bash
-$ cp .env.example .env
-$ vi .env
-```
-
-Make sure that `TWILIO_SID` and `TWILIO_TOKEN` correspond to the Figaro config
-values `twilio_sid` and `twilio_auth_token` in the environment that are you
-are currently testing (based on `IDP_URL`).
-
 Run the tests
 -------------
 
@@ -62,19 +48,17 @@ $ bundle install
 ```
 
 ```bash
-$ make test
+$ make test LOWER_ENV=int
 ```
 
 ### Testing `int` and `staging`
-By default, the tests use the `int` server. To run the smoke tests
-against staging, using USAJOBS as the SP, comment out `SP_URL` and `IDP_URL`
-in the `INT` section of your `.env`, and uncomment `SP_URL` and `IDP_URL` in
-the `STAGING` section.
+To specify the lower environment when running tests, set the `LOWER_ENV` env var,
+as shown above.
 
-### Note about Voice OTP testing
-Google Voice transcription is not very accurate with the passcodes. We've tried
-to account for the most common scenarios, but it's possible the code won't be
-correctly transcribed. If a Voice OTP spec fails, try running it again.
+### Note about test failures
+Sometimes specs might fail because they weren't able to parse the OTP code
+from Google. If a particular spec fails, try running it again. We've had good
+luck running each feature spec file one at a time.
 
 To create scripts for New Relic monitoring
 ------------------------------------------
@@ -90,17 +74,3 @@ node new_relic_scripts/<script-name>.js
 
 After the scripts are built, they can be added to
 [New Relic Synthetics](https://docs.newrelic.com/docs/synthetics/new-relic-synthetics/using-monitors/add-edit-monitors).
-
-For the scripts to be build properly, some environment variables may need to be
-set according to the instructions below.
-
-### TOTP Sign in
-
-Create a test user on Login.gov. Setup TOTP for the user and save the TOTP code.
-Afterwards, add the following to your `.env`:
-
-- `IDP_URL`: The IDP url to run the script against
-- `NR_TOTP_SIGN_IN_EMAIL`: The user's email address
-- `NR_TOTP_SIGN_IN_PASSWORD`: The user's password
-- `NR_TOTP_SIGN_IN_TOTP_SECRET`: The user's TOTP secret, received when setting
-   up TOTP

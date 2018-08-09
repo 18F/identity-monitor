@@ -37,7 +37,7 @@ const getTextMessages = ({ sentAfter, phoneNumber }) => {
 };
 
 const readOTPFromMessage = (message) => {
-  const match = message.body.match(/(\d+) is your login\.gov one-time/);
+  const match = message.body.match(/(\d+) is your login\.gov/);
   if (match) {
     return match[1];
   }

@@ -6,12 +6,12 @@ const webpack = require('webpack');
 // Whitelist specific env variables for use in DefinePlugin below
 const environmentVariables = [
   'IDP_URL',
-  'NR_SMS_SIGN_IN_EMAIL',
-  'NR_SMS_SIGN_IN_PASSWORD',
-  'NR_SMS_SIGN_IN_TWILIO_PHONE',
-  'NR_TOTP_SIGN_IN_EMAIL',
-  'NR_TOTP_SIGN_IN_PASSWORD',
-  'NR_TOTP_SIGN_IN_TOTP_SECRET',
+  'SMS_SIGN_IN_EMAIL',
+  'SMS_SIGN_IN_PASSWORD',
+  'SMS_SIGN_IN_TWILIO_PHONE',
+  'TOTP_SIGN_IN_EMAIL',
+  'TOTP_SIGN_IN_PASSWORD',
+  'TOTP_SIGN_IN_TOTP_SECRET',
   'TWILIO_SID',
   'TWILIO_TOKEN',
 ].reduce((variables, key) => {
