@@ -18,7 +18,8 @@ lint: $(CONFIG)
 	reek
 
 test:
-	bundle exec rspec
+	bundle exec rspec --tag ~voice
+	bundle exec rspec --tag voice
 
 build_nr_scripts:
 	npm run build-nr-scripts

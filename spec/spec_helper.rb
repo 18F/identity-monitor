@@ -6,6 +6,7 @@ require 'dotenv'
 require 'gmail'
 require 'capybara/rspec'
 require 'selenium/webdriver'
+require 'rotp'
 
 Capybara.register_driver :headless_chrome do |app|
   capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
@@ -43,32 +44,42 @@ Dotenv.load
 PASSWORD = 'salty pickles'.freeze
 EMAIL = ENV['EMAIL']
 EMAIL_PASSWORD = ENV['EMAIL_PASSWORD']
-PHONE = ENV['PHONE']
-if !EMAIL || !EMAIL_PASSWORD || !PHONE
-  abort('Must set EMAIL EMAIL_PASSWORD and PHONE env vars -- did you create a .env file?')
+GOOGLE_VOICE_PHONE = ENV['GOOGLE_VOICE_PHONE']
+if !EMAIL || !EMAIL_PASSWORD || !GOOGLE_VOICE_PHONE
+  abort(
+    'Must set EMAIL EMAIL_PASSWORD and GOOGLE_VOICE_PHONE env vars -- did you create a .env file?'
+  )
 end
 
 ##############################################################################
 # helper methods
 
 def idp_signin_url
-  ENV['IDP_URL']
+  ENV["#{lower_env}_IDP_URL"]
 end
 
 def idp_signup_url
-  ENV['IDP_URL'] + '/sign_up/enter_email'
+  idp_signin_url + '/sign_up/enter_email'
 end
 
 def idp_reset_password_url
-  ENV['IDP_URL'] + '/users/password/new'
+  idp_signin_url + '/users/password/new'
 end
 
 def idp_logout_url
-  ENV['IDP_URL'] + '/api/saml/logout'
+  idp_signin_url + '/api/saml/logout'
 end
 
-def sp_url
-  ENV['SP_URL']
+def oidc_sp_url
+  ENV["#{lower_env}_OIDC_SP_URL"]
+end
+
+def saml_sp_url
+  ENV["#{lower_env}_SAML_SP_URL"]
+end
+
+def lower_env
+  ENV['LOWER_ENV'].upcase
 end
 
 def random_email_address

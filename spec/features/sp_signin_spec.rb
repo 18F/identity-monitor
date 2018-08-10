@@ -3,34 +3,35 @@ require 'spec_helper'
 describe 'SP initiated sign in' do
   before { inbox_clear }
 
-  it 'redirects back to SP' do
-    visit idp_signup_url
-    creds = create_new_account_with_sms
-    visit idp_logout_url
+  context 'OIDC' do
+    it 'redirects back to SP' do
+      visit_idp_from_oidc_sp
+      click_on 'Sign in'
+      creds = { email_address: EMAIL }
+      sign_in_and_2fa(creds)
 
-    visit sp_url
-    if sp_url == usa_jobs_url
-      click_button 'Continue'
-    else
-      find(:css, '.btn').click
+      if oidc_sp_url == usa_jobs_url
+        expect(current_url).to match(%r{https://.+\.uat\.usajobs\.gov})
+      else
+        expect(current_url).to match(%r{https://sp})
+        expect(page).to have_content(EMAIL)
+      end
+
+      log_out_from_oidc_sp
     end
+  end
 
-    click_on 'Sign in'
+  context 'SAML', if: lower_env == 'INT' do
+    it 'redirects back to SP' do
+      visit_idp_from_saml_sp
+      click_on 'Sign in'
+      creds = { email_address: EMAIL }
+      sign_in_and_2fa(creds)
 
-    fill_in 'user_email', with: creds[:email_address]
-    fill_in 'user_password', with: PASSWORD
-    click_on 'Next'
-
-    otp = check_for_otp(option: 'sms')
-    fill_in 'code', with: otp
-    click_on 'Submit'
-    click_on 'Continue'
-
-    if sp_url == usa_jobs_url
-      expect(current_url).to match(%r{https://.+\.uat\.usajobs\.gov})
-    else
       expect(current_url).to match(%r{https://sp})
-      expect(page).to have_content(email_address)
+      expect(page).to have_content(EMAIL)
+
+      log_out_from_saml_sp
     end
   end
 end

@@ -19,21 +19,23 @@ module GmailHelpers
     inbox_unread.each do |email|
       msg = email.message.parts[0].body
       if option == 'sms'
-        otp = msg.match(/(\d+) is your login.gov/)[1]
+        otp = msg.match(/(\d+) is your login\.gov/)
       elsif option == 'voice'
         otp = msg.match(/passcode is (\d+\s?\d+)\s?(one|to|for|hate)?/)
-        if otp[2]
-          last_digit = digit_from_word[otp[2]]
-          otp = otp[1] + last_digit
-        else
-          otp = otp[1].delete(' ')
-        end
-        puts "passcode as transcribed by Google Voice is: #{otp}"
       end
-      if otp
-        email.read!
-        return otp
+
+      next unless otp
+      puts "parsed otp: #{otp.inspect}"
+
+      if otp[2]
+        last_digit = digit_from_word[otp[2]]
+        otp = otp[1] + last_digit
+      else
+        otp = otp[1].delete(' ')
       end
+
+      email.read!
+      return otp
     end
     nil
   end
@@ -95,11 +97,11 @@ module GmailHelpers
     value = nil
     counter = 0
     until value
-      sleep 2
+      sleep 3
       puts "checking for #{label} ..."
       value = yield
       counter += 1
-      if counter >= 120
+      if counter >= 20
         puts "giving up #{label} check ... timed out"
         break
       end

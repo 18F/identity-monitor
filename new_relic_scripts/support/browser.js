@@ -2,8 +2,12 @@ const { expect } = require('chai');
 const url = require('url');
 
 const {
-  IDP_URL
+  LOWER_ENV,
+  INT_IDP_URL,
+  STAGING_IDP_URL,
 } = process.env;
+
+const IDP_URL = eval(`${LOWER_ENV.toUpperCase()}_IDP_URL`);
 
 const fillOutOTPForm = (otp) => {
   console.log('Entering OTP');
