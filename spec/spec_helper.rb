@@ -34,6 +34,8 @@ RSpec.configure do |config|
     metadata[:js] = true
   end
 
+  config.example_status_persistence_file_path = './tmp/rspec-examples.txt'
+
   config.include GmailHelpers
   config.include IdpHelpers
   config.include SpHelpers

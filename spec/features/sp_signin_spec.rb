@@ -10,8 +10,8 @@ describe 'SP initiated sign in' do
       creds = { email_address: EMAIL }
       sign_in_and_2fa(creds)
 
-      if oidc_sp_url == usa_jobs_url
-        expect(current_url).to match(%r{https://.+\.uat\.usajobs\.gov})
+      if usa_jobs_urls.include?(oidc_sp_url)
+        expect(current_url).to match(%r{https://.*usajobs\.gov})
       else
         expect(current_url).to match(%r{https://sp})
         expect(page).to have_content(EMAIL)
