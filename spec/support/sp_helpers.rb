@@ -8,11 +8,7 @@ module SpHelpers
 
   def visit_idp_from_oidc_sp
     visit oidc_sp_url
-    if usa_jobs_urls.include?(oidc_sp_url)
-      click_button 'Continue'
-    else
-      find(:css, '.btn').click
-    end
+    find(:css, '.btn').click unless usa_jobs_urls.include?(oidc_sp_url)
 
     expect(current_url).to match(%r{https://(idp|secure\.login\.gov)})
   end
@@ -40,7 +36,7 @@ module SpHelpers
 
   def log_out_from_saml_sp
     click_on 'Log out'
-    expect(current_url).to match saml_sp_url
     expect(page).to have_content 'Logout successful'
+    expect(current_url).to match saml_sp_url
   end
 end
