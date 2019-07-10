@@ -25,9 +25,9 @@ module IdpHelpers
 
   def create_new_account_with_voice
     create_new_account_up_until_password
-    find("label[for='two_factor_options_form_selection_voice']").click
     click_on 'Continue'
     fill_in 'user_phone_form_phone', with: GOOGLE_VOICE_PHONE
+    find("label[for='user_phone_form_otp_delivery_preference_voice'").click
     click_send_otp
     otp = check_for_otp(option: 'voice')
     fill_in 'code', with: otp
