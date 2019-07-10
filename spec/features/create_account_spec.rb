@@ -72,7 +72,7 @@ describe 'create account' do
 
     click_on 'Continue'
 
-    if usa_jobs_urls.include?(oidc_sp_url)
+    if oidc_sp_is_usajobs?
       expect(current_url).to match(%r{https://.*usajobs\.gov})
     else
       expect(current_url).to match(%r{https://sp})

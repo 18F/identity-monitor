@@ -40,6 +40,10 @@ RSpec.configure do |config|
   config.include GmailHelpers
   config.include IdpHelpers
   config.include SpHelpers
+
+  config.after(:each) do
+    Capybara.reset_session!
+  end
 end
 
 Dotenv.load
