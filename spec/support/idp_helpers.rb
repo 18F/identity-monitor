@@ -6,7 +6,7 @@ module IdpHelpers
   def setup_backup_codes
     find("label[for='two_factor_options_form_selection_backup_code']").click
     click_on 'Continue'
-    # click_on 'continue with backup codes'
+    click_on 'continue with backup codes'
     click_on 'Continue'
   end
 
