@@ -7,6 +7,7 @@ require 'gmail'
 require 'capybara/rspec'
 require 'selenium/webdriver'
 require 'rotp'
+require 'pry-byebug'
 
 Capybara.register_driver :headless_chrome do |app|
   capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
@@ -39,6 +40,10 @@ RSpec.configure do |config|
   config.include GmailHelpers
   config.include IdpHelpers
   config.include SpHelpers
+
+  config.after(:each) do
+    Capybara.reset_session!
+  end
 end
 
 Dotenv.load

@@ -1,27 +1,28 @@
 module SpHelpers
-  def usa_jobs_urls
-    [
-      'https://login.uat.usajobs.gov/Access/Transition',
-      'https://login.usajobs.gov/Access/Transition'
-    ]
+  def oidc_sp_is_usajobs?
+    oidc_sp_url.match(/usajobs\.gov/)
   end
 
   def visit_idp_from_oidc_sp
     visit oidc_sp_url
-    find(:css, '.btn').click unless usa_jobs_urls.include?(oidc_sp_url)
+    if oidc_sp_is_usajobs?
+      click_on 'Sign In'
+    else
+      find(:css, '.sign-in-bttn').click
+    end
 
     expect(current_url).to match(%r{https://(idp|secure\.login\.gov)})
   end
 
   def visit_idp_from_saml_sp
     visit saml_sp_url
-    find(:css, '.btn').click
+    find(:css, '.sign-in-bttn').click
 
     expect(current_url).to match(%r{https://(idp|secure\.login\.gov)})
   end
 
   def log_out_from_oidc_sp
-    if usa_jobs_urls.include?(oidc_sp_url)
+    if oidc_sp_is_usajobs?
       within('.usajobs-home__title') do
         click_link 'Sign Out'
       end
