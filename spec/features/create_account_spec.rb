@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'create account' do
   before { inbox_clear }
 
-  context 'OIDC' do
+  context 'OIDC', unless: lower_env == 'STAGING' do
     it 'creates new account with SMS option for 2FA' do
       visit_idp_from_oidc_sp
       click_on 'Create an account'
