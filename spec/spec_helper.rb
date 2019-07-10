@@ -7,6 +7,7 @@ require 'gmail'
 require 'capybara/rspec'
 require 'selenium/webdriver'
 require 'rotp'
+require 'pry-byebug'
 
 Capybara.register_driver :headless_chrome do |app|
   capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
