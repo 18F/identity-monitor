@@ -6,7 +6,6 @@ describe 'SP initiated sign in' do
   context 'OIDC' do
     it 'redirects back to SP' do
       visit_idp_from_oidc_sp
-      click_on 'Sign in'
       creds = { email_address: EMAIL }
       sign_in_and_2fa(creds)
 
@@ -24,7 +23,6 @@ describe 'SP initiated sign in' do
   context 'SAML', if: lower_env == 'INT' do
     it 'redirects back to SP' do
       visit_idp_from_saml_sp
-      click_on 'Sign in'
       creds = { email_address: EMAIL }
       sign_in_and_2fa(creds)
 

@@ -3,18 +3,11 @@ module IdpHelpers
     click_on 'Send code'
   end
 
-  def acknowledge_personal_key
-    code_words = []
-
-    page.all(:css, '[data-personal-key]').map do |node|
-      code_words << node.text
-    end
-
-    button_text = 'Continue'
-    click_on button_text, class: 'personal-key-continue'
-    fill_in 'personal_key', with: code_words.join('-')
-    click_on button_text, class: 'personal-key-confirm'
-    code_words
+  def setup_backup_codes
+    find("label[for='two_factor_options_form_selection_backup_code']").click
+    click_on 'Continue'
+    click_on 'continue with backup codes'
+    click_on 'Continue'
   end
 
   def create_new_account_with_sms
@@ -25,9 +18,9 @@ module IdpHelpers
     otp = check_for_otp(option: 'sms')
     fill_in 'code', with: otp
     click_on 'Submit'
-    code_words = acknowledge_personal_key
-    puts "created account for #{email_address} with personal key: #{code_words.join('-')}"
-    { email_address: email_address, personal_key: code_words.join('-') }
+    setup_backup_codes
+    puts "created account for #{email_address}"
+    { email_address: email_address }
   end
 
   def create_new_account_with_voice
@@ -39,10 +32,9 @@ module IdpHelpers
     otp = check_for_otp(option: 'voice')
     fill_in 'code', with: otp
     click_on 'Submit'
-    expect(page).to have_content 'personal key'
-    code_words = acknowledge_personal_key
-    puts "created account for #{email_address} with personal key: #{code_words.join('-')}"
-    { email_address: email_address, personal_key: code_words.join('-') }
+    setup_backup_codes
+    puts "created account for #{email_address}"
+    { email_address: email_address }
   end
 
   def create_new_account_with_totp
@@ -52,10 +44,9 @@ module IdpHelpers
     secret = find('#qr-code').text
     fill_in 'code', with: generate_totp_code(secret)
     click_button 'Submit'
-    expect(page).to have_content 'personal key'
-    code_words = acknowledge_personal_key
-    puts "created account for #{email_address} with personal key: #{code_words.join('-')}"
-    { email_address: email_address, personal_key: code_words.join('-') }
+    setup_backup_codes
+    puts "created account for #{email_address}"
+    { email_address: email_address }
   end
 
   def generate_totp_code(secret)
@@ -83,7 +74,7 @@ module IdpHelpers
   def sign_in_and_2fa(creds)
     fill_in 'user_email', with: creds[:email_address]
     fill_in 'user_password', with: PASSWORD
-    click_on 'Next'
+    click_on 'Sign In'
     fill_in 'code', with: check_for_otp(option: 'sms')
     click_on 'Submit'
   end

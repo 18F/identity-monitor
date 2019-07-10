@@ -8,14 +8,14 @@ module SpHelpers
 
   def visit_idp_from_oidc_sp
     visit oidc_sp_url
-    find(:css, '.btn').click unless usa_jobs_urls.include?(oidc_sp_url)
+    find(:css, '.sign-in-bttn').click unless usa_jobs_urls.include?(oidc_sp_url)
 
     expect(current_url).to match(%r{https://(idp|secure\.login\.gov)})
   end
 
   def visit_idp_from_saml_sp
     visit saml_sp_url
-    find(:css, '.btn').click
+    find(:css, '.sign-in-bttn').click
 
     expect(current_url).to match(%r{https://(idp|secure\.login\.gov)})
   end
