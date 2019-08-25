@@ -1,0 +1,32 @@
+jobs:
+  build:
+    docker:
+      - image: circleci/ruby:2.5.3-node-browsers
+    steps:
+      - run: make setup
+  test_int:
+    docker:
+      - image: circleci/ruby:2.5.3-node-browsers
+    steps:
+      - run: make setup test LOWER_ENV=int
+  test_staging:
+    docker:
+      - image: circleci/ruby:2.5.3-node-browsers
+    steps:
+      - run: make setup test LOWER_ENV=staging
+workflows:
+  version: 2
+  commit:
+    jobs:
+      - build
+  daily:
+    triggers:
+      - schedule:
+          cron: "15 10 * * *"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - test_int
+      - test_staging

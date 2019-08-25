@@ -25,6 +25,7 @@ module GmailHelpers
       end
 
       next unless otp
+
       puts "parsed otp: #{otp.inspect}"
 
       if otp[2]
@@ -52,6 +53,7 @@ module GmailHelpers
   def current_confirmation_link
     inbox_unread.each do |email|
       next unless email.subject == 'Confirm your email'
+
       msg = email.message.parts[0].body
       url = msg.match(/(https:.+confirmation_token=[\w\-]+)/)
       if url
@@ -65,6 +67,7 @@ module GmailHelpers
   def current_password_reset_link
     inbox_unread.each do |email|
       next unless email.subject == 'Reset your password'
+
       msg = email.message.parts[0].body
       url = msg.match(/(https:.+reset_password_token=[\w\-]+)/)
       if url
@@ -107,6 +110,7 @@ module GmailHelpers
       end
     end
     raise "cannot find #{label}" unless value
+
     value
   end
 end
