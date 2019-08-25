@@ -2,8 +2,7 @@
 *.rbc
 .bundle
 .config
-#do we want to generate this when running circleci? does it make any sense to?
-#.env
+.env
 
 coverage
 InstalledFiles

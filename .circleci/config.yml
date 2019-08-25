@@ -9,8 +9,8 @@ jobs:
     docker:
       - image: circleci/ruby:2.5.3-node-browsers
     steps:
-      - checkout
       - run: make setup
+      - run: cp .env.example .env
       - run: make setup test LOWER_ENV=int
   test_staging:
     docker:
@@ -18,6 +18,7 @@ jobs:
     steps:
       - checkout
       - run: make setup
+      - run: cp .env.example .env
       - run: make test LOWER_ENV=staging
 workflows:
   version: 2
