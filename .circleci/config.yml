@@ -15,6 +15,7 @@ jobs:
     docker:
       - image: circleci/ruby:2.3.5-node-browsers
     steps:
+      - checkout
       - run: make setup
       - run: make test
 workflows:
@@ -25,7 +26,7 @@ workflows:
   daily:
     triggers:
       - schedule:
-          cron: "15,20,25 * * * *"
+          cron: "25,30,35 * * * *"
           filters:
             branches:
               only:
