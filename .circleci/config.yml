@@ -7,13 +7,13 @@ general:
 jobs:
   build:
     docker:
-      - image: circleci/ruby:2.5.3-node-browsers
+      - image: circleci/ruby:2.3.5-node-browsers
     steps:
       - checkout
       - run: make setup
   test_int:
     docker:
-      - image: circleci/ruby:2.5.3-node-browsers
+      - image: circleci/ruby:2.3.5-node-browsers
     steps:
       - run: make setup
       - run: make test
@@ -25,7 +25,7 @@ workflows:
   daily:
     triggers:
       - schedule:
-          cron: "0,5,10,15,20 * * * *"
+          cron: "15,20, 25 * * * *"
           filters:
             branches:
               only:
