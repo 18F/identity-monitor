@@ -1,3 +1,7 @@
+general:
+  branches:
+    only:
+      - clara-daily-tests
 jobs:
   build:
     docker:
@@ -23,6 +27,6 @@ workflows:
           filters:
             branches:
               only:
-                - master
+                - clara-daily-tests
     jobs:
       - test_int
