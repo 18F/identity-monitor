@@ -5,21 +5,20 @@ require 'pp'
 require 'dotenv'
 require 'gmail'
 require 'capybara/rspec'
-require 'selenium/webdriver'
+require 'webdrivers/chromedriver'
 require 'rotp'
 require 'pry-byebug'
 
-Capybara.register_driver :headless_chrome do |app|
-  capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
-    chromeOptions: { args: %w[headless disable-gpu] }
-  )
+Capybara.register_driver :chrome do |app|
+  browser_options = Selenium::WebDriver::Chrome::Options.new
+  browser_options.args << '--no-sandbox'
 
   Capybara::Selenium::Driver.new app,
                                  browser: :chrome,
-                                 desired_capabilities: capabilities
+                                 options: browser_options
 end
 
-Capybara.javascript_driver = :headless_chrome
+Capybara.javascript_driver = :chrome
 Capybara.default_max_wait_time = 5
 
 Dir['spec/support/**/*.rb'].sort.each { |file| require file }
