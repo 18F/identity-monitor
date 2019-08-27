@@ -17,7 +17,7 @@ jobs:
       - image: circleci/ruby:2.5.3-node-browsers
     steps:
       - checkout
-      - gem update bundler
+      - run: gem update bundler
       - run: make setup test
 workflows:
   version: 2
