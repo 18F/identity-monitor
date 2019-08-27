@@ -10,14 +10,12 @@ jobs:
       - image: circleci/ruby:2.5.3-node-browsers
     steps:
       - checkout
-      - run: gem update bundler
       - run: make setup
   test_int:
     docker:
       - image: circleci/ruby:2.5.3-node-browsers
     steps:
       - checkout
-      - run: gem update bundler
       - run: make setup test
 workflows:
   version: 2
@@ -27,7 +25,7 @@ workflows:
   daily:
     triggers:
       - schedule:
-          cron: "30,35 * * * *"
+          cron: "0 16 * * 1"
           filters:
             branches:
               only:
