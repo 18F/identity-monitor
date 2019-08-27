@@ -10,15 +10,15 @@ jobs:
       - image: circleci/ruby:2.5.3-node-browsers
     steps:
       - checkout
-      - run: rm Gemfile.lock
+      - run: gem update bundler
       - run: make setup
   test_int:
     docker:
       - image: circleci/ruby:2.5.3-node-browsers
     steps:
       - checkout
-      - run: make setup
-      - run: make test
+      - gem update bundler
+      - run: make setup test
 workflows:
   version: 2
   commit:
