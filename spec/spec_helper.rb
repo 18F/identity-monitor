@@ -40,8 +40,8 @@ RSpec.configure do |config|
   config.include IdpHelpers
   config.include SpHelpers
 
-  config.after(:each) do
-    Capybara.reset_session!
+  config.before(:each) do
+    reset_sessions
   end
 end
 
@@ -89,6 +89,17 @@ def lower_env
 end
 
 def random_email_address
-  random_str = SecureRandom.hex(3)
+  random_str = SecureRandom.hex(12)
   EMAIL.dup.gsub(/@/, "+#{random_str}@")
+end
+
+# Capybara.reset_session! deletes the cookies for the current site. As such
+# we need to visit each site individually and reset there.
+def reset_sessions
+  visit idp_signin_url
+  Capybara.reset_session!
+  visit oidc_sp_url if oidc_sp_url
+  Capybara.reset_session!
+  visit saml_sp_url if saml_sp_url
+  Capybara.reset_session!
 end
