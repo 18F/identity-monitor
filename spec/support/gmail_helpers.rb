@@ -16,22 +16,38 @@ module GmailHelpers
   end
 
   def current_otp_from_email(option)
+    if option == 'sms'
+      sms_otp_from_email
+    elsif option == 'voice'
+      voice_otp_from_email
+    end
+  end
+
+  def sms_otp_from_email
     inbox_unread.each do |email|
       msg = email.message.parts[0].body
-      if option == 'sms'
-        otp = msg.match(/(\d+) is your login\.gov/)
-      elsif option == 'voice'
-        otp = msg.match(/passcode is (\d+\s?\d+)\s?(one|to|for|hate)?/)
-      end
+      match_data = msg.match(/(Enter )?(\d{6})[\w ]{,16}login\.gov/)
 
-      next unless otp
-      puts "parsed otp: #{otp.inspect}"
+      next unless match_data
 
-      if otp[2]
-        last_digit = digit_from_word[otp[2]]
-        otp = otp[1] + last_digit
+      email.read!
+      return match_data[2]
+    end
+    nil
+  end
+
+  def voice_otp_from_email
+    inbox_unread.each do |email|
+      msg = email.message.parts[0].body
+      match_data = msg.match(/passcode is (\d+\s?\d+)\s?(one|to|for|hate)?/)
+
+      next unless match_data
+
+      if match_data[2]
+        last_digit = digit_from_word[match_data[2]]
+        otp = match_data[1] + last_digit
       else
-        otp = otp[1].delete(' ')
+        otp = match_data[1].delete(' ')
       end
 
       email.read!

@@ -12,8 +12,7 @@ describe 'SP initiated sign in' do
       if oidc_sp_is_usajobs?
         expect(current_url).to match(%r{https://.*usajobs\.gov})
       else
-        expect(current_url).to match(%r{https://sp})
-        expect(page).to have_content(EMAIL)
+        expect(current_url).to match(%r{https://sp-oidc-sinatra})
       end
 
       log_out_from_oidc_sp
