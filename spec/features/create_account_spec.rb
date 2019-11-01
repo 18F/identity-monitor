@@ -75,8 +75,7 @@ describe 'create account' do
     if oidc_sp_is_usajobs?
       expect(current_url).to match(%r{https://.*usajobs\.gov})
     else
-      expect(current_url).to match(%r{https://sp})
-      expect(page).to have_content(email_address)
+      expect(current_url).to match(%r{https://sp\-oidc\-sinatra})
     end
   end
 
