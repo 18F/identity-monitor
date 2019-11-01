@@ -17,6 +17,7 @@ jobs:
       - image: circleci/ruby:2.5.3-node-browsers
     steps:
       - checkout
+      - run: rm Gemfile.lock
       - run: make setup test
 workflows:
   version: 2
