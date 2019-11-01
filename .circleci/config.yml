@@ -10,6 +10,7 @@ jobs:
       - image: circleci/ruby:2.5.3-node-browsers
     steps:
       - checkout
+      - run: rm Gemfile.lock
       - run: make setup
   test_int:
     docker:
@@ -25,7 +26,7 @@ workflows:
   daily:
     triggers:
       - schedule:
-          cron: "0 16 * * 1"
+          cron: "5,10,15 21 * * *"
           filters:
             branches:
               only:
