@@ -27,7 +27,7 @@ workflows:
   daily:
     triggers:
       - schedule:
-          cron: "55,59 21 * * *"
+          cron: "00 16 * * 1-5"
           filters:
             branches:
               only:
