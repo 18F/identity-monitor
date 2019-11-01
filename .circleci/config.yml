@@ -3,6 +3,7 @@ general:
   branches:
     only:
       - master
+      - clara-daily-tests
 jobs:
   build:
     docker:
@@ -26,10 +27,10 @@ workflows:
   daily:
     triggers:
       - schedule:
-          cron: "45,50 21 * * *"
+          cron: "55,59 21 * * *"
           filters:
             branches:
               only:
-                - master
+                - clara-daily-tests
     jobs:
       - test_int
