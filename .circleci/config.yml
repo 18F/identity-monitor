@@ -7,8 +7,8 @@ jobs:
     steps:
       - checkout
       - run:
-        name: Setup bundler
-        command: gem install bundler
+          name: Setup bundler
+          command: gem install bundler
       - restore-cache:
           keys:
             - v2-identity-monitor-bundle-{{ checksum "Gemfile.lock" }}
