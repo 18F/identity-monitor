@@ -1,3 +1,25 @@
 #!/usr/bin/env ruby
 
-puts "Running tests"
+##
+# There are lots of moving parts so the tests can be flaky.
+# For better or worse we only sound the alarm if we fail after 3 tries.
+#
+def run_and_retry_tests(environment)
+  result = system "LOWER_ENV=#{environment} bundle exec rspec"
+  return if result
+
+  2.times do
+    puts "Smoke tests failed in #{environment}. Retrying..."
+    return if system "LOWER_ENV=#{environment} bundle exec rspec --only-failure"
+  end
+  raise "Tests failed in #{environment}"
+end
+
+puts 'Running tests in INT'
+run_and_retry_tests('int')
+
+puts 'Running tests in STAGING'
+run_and_retry_tests('staging')
+
+puts 'Renning tests in PROD'
+run_and_retry_tests('prod')
