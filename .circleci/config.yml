@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build:
+  test:
     docker:
       - image: circleci/ruby:2.5.5-browsers
     steps:
@@ -25,3 +25,15 @@ jobs:
       - run:
           name: Run tests
           command: bin/circleci-run
+workflows:
+   version: 2
+   hourly:
+     triggers:
+       - schedule:
+           cron: "0 * * * *"
+           filters:
+             branches:
+               only:
+                 - jmhooper-circleci
+     jobs:
+       - test
