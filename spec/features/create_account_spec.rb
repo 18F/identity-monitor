@@ -14,16 +14,6 @@ describe 'create account' do
       log_out_from_oidc_sp
     end
 
-    it 'creates new account with Voice option for 2FA', voice: true do
-      visit_idp_from_oidc_sp
-      click_on 'Create an account'
-      create_new_account_with_voice
-
-      expect_user_is_redirected_to_oidc_sp
-
-      log_out_from_oidc_sp
-    end
-
     it 'creates new account with TOTP for 2FA' do
       visit_idp_from_oidc_sp
       click_on 'Create an account'
@@ -40,16 +30,6 @@ describe 'create account' do
       visit_idp_from_saml_sp
       click_on 'Create an account'
       create_new_account_with_sms
-
-      expect_user_is_redirected_to_saml_sp
-
-      log_out_from_saml_sp
-    end
-
-    it 'creates new account with Voice option for 2FA', voice: true do
-      visit_idp_from_saml_sp
-      click_on 'Create an account'
-      create_new_account_with_voice
 
       expect_user_is_redirected_to_saml_sp
 

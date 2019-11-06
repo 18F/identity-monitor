@@ -1,9 +1,6 @@
 # reek config overwrites defaults
 Attribute:
   enabled: false
-ControlParameter:
-  exclude:
-    - GmailHelpers#current_otp_from_email
 IrresponsibleModule:
   enabled: false
 DuplicateMethodCall:

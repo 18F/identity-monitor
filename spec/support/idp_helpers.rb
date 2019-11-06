@@ -15,22 +15,7 @@ module IdpHelpers
     click_on 'Continue' # choose default SMS option
     fill_in 'new_phone_form_phone', with: GOOGLE_VOICE_PHONE
     click_send_otp
-    otp = check_for_otp(option: 'sms')
-    fill_in 'code', with: otp
-    click_on 'Submit'
-    click_on 'Continue'
-    setup_backup_codes
-    puts "created account for #{email_address}"
-    { email_address: email_address }
-  end
-
-  def create_new_account_with_voice
-    create_new_account_up_until_password
-    find("label[for='two_factor_options_form_selection_voice']").click
-    click_on 'Continue'
-    fill_in 'new_phone_form_phone', with: GOOGLE_VOICE_PHONE
-    click_send_otp
-    otp = check_for_otp(option: 'voice')
+    otp = check_for_otp
     fill_in 'code', with: otp
     click_on 'Submit'
     click_on 'Continue'
@@ -78,7 +63,7 @@ module IdpHelpers
     fill_in 'user_email', with: creds[:email_address]
     fill_in 'user_password', with: PASSWORD
     click_on 'Sign In'
-    fill_in 'code', with: check_for_otp(option: 'sms')
+    fill_in 'code', with: check_for_otp
     click_on 'Submit'
   end
 end
