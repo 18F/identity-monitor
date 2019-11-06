@@ -41,4 +41,4 @@ File.open('.env', 'w') do |env_file|
   end
 end
 
-raise "Missing configs #{nil_configs.join(',')}" if nil_configs.any?
+raise "Missing configs #{nil_configs.join(', ')}" if nil_configs.any?
