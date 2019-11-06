@@ -5,12 +5,12 @@
 # For better or worse we only sound the alarm if we fail after 3 tries.
 #
 def run_and_retry_tests(environment)
-  result = system "LOWER_ENV=#{environment} bundle exec rspec"
+  result = system "HEADLESS_BROWSER=true LOWER_ENV=#{environment} bundle exec rspec"
   return if result
 
   2.times do
     puts "Smoke tests failed in #{environment}. Retrying..."
-    return if system "LOWER_ENV=#{environment} bundle exec rspec --only-failure"
+    return if system "HEADLESS_BROWSER=true LOWER_ENV=#{environment} bundle exec rspec --only-failure"
   end
   raise "Tests failed in #{environment}"
 end
