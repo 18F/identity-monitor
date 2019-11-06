@@ -6,6 +6,9 @@ jobs:
       - image: circleci/ruby:2.5.5-browsers
     steps:
       - checkout
+      - run:
+        name: Setup bundler
+        command: gem install bundler
       - restore-cache:
           keys:
             - v2-identity-monitor-bundle-{{ checksum "Gemfile.lock" }}
