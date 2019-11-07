@@ -12,6 +12,9 @@ require 'pry-byebug'
 Capybara.register_driver :chrome do |app|
   browser_options = Selenium::WebDriver::Chrome::Options.new
   browser_options.args << '--no-sandbox'
+  browser_options.args << '--window-size=1200x700'
+  browser_options.args << '--headless' if ENV['HEADLESS_BROWSER'] == 'true'
+  browser_options.args << '--disable-gpu' if ENV['HEADLESS_BROWSER'] == 'true'
 
   Capybara::Selenium::Driver.new app,
                                  browser: :chrome,

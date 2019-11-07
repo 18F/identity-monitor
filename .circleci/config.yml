@@ -1,0 +1,39 @@
+version: 2
+jobs:
+  test:
+    docker:
+      - image: circleci/ruby:2.5.5-browsers
+    steps:
+      - checkout
+      - run:
+          name: Setup bundler
+          command: gem install bundler
+      - restore-cache:
+          keys:
+            - v2-identity-monitor-bundle-{{ checksum "Gemfile.lock" }}
+      - run:
+          name: Install dependencies
+          command: |
+            bundle install --path vendor/bundle
+      - save-cache:
+          key: v2-identity-monitor-bundle-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+      - run:
+          name: Setup tests
+          command: bin/circleci-setup
+      - run:
+          name: Run tests
+          command: bin/circleci-run
+workflows:
+   version: 2
+   hourly:
+     triggers:
+       - schedule:
+           cron: "0 * * * *"
+           filters:
+             branches:
+               only:
+                 - master
+     jobs:
+       - test

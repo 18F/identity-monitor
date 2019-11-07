@@ -1,0 +1,44 @@
+#!/usr/bin/env ruby
+
+CONFIG_NAMES = [
+  # GMail and Google Voice
+  'EMAIL',
+  'EMAIL_PASSWORD',
+  'GOOGLE_VOICE_PHONE',
+  # INT
+  'INT_OIDC_SP_URL',
+  'INT_SAML_SP_URL',
+  'INT_IDP_URL',
+  # STAGING
+  'STAGING_OIDC_SP_URL',
+  'STAGING_IDP_URL',
+  # PROD
+  'PROD_OIDC_SP_URL',
+  'PROD_IDP_URL',
+  # TOTP TEST USER
+  'TOTP_SIGN_IN_EMAIL',
+  'TOTP_SIGN_IN_PASSWORD',
+  'TOTP_SIGN_IN_TOTP_SECRET',
+  # SMS TEST USER
+  'SMS_SIGN_IN_EMAIL',
+  'SMS_SIGN_IN_PASSWORD',
+  'SMS_SIGN_IN_TWILIO_PHONE'
+].freeze
+
+nil_configs = []
+
+File.open('.env', 'w') do |env_file|
+  CONFIG_NAMES.each do |config_name|
+    config_value = ENV[config_name]
+
+    # Careful.
+    # If you push config_value instead of config_name here the config's private
+    # value will be exposed in the public CircleCI logs.
+    # Check your work.
+    nil_configs.push(config_name) if config_value.nil? || config_value == ''
+
+    env_file.puts("#{config_name}='#{config_value}'")
+  end
+end
+
+raise "Missing configs #{nil_configs.join(', ')}" if nil_configs.any?

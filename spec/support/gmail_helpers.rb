@@ -89,7 +89,7 @@ module GmailHelpers
       puts "checking for #{label} ..."
       value = yield
       counter += 1
-      if counter >= 20
+      if counter >= 5
         puts "giving up #{label} check ... timed out"
         break
       end

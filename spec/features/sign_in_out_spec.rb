@@ -9,6 +9,7 @@ describe 'sign in and out' do
     click_on 'Sign out'
     sign_in_and_2fa(creds)
 
-    expect(current_url).to eq idp_signin_url + '/account'
+    expect(page).to have_content('Your account')
+    expect(page.current_url).to eq(idp_signin_url + '/account')
   end
 end

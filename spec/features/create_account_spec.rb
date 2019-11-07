@@ -48,23 +48,26 @@ describe 'create account' do
   end
 
   def expect_user_is_redirected_to_oidc_sp
-    expect(current_path).to eq '/sign_up/completed'
+    expect(page).to have_current_path('/sign_up/completed')
 
     click_on 'Continue'
 
     if oidc_sp_is_usajobs?
+      expect(page).to have_content('Welcome ')
       expect(current_url).to match(%r{https://.*usajobs\.gov})
     else
+      expect(page).to have_content('OpenID Connect Sinatra Example')
       expect(current_url).to match(%r{https://sp\-oidc\-sinatra})
     end
   end
 
   def expect_user_is_redirected_to_saml_sp
-    expect(current_path).to eq '/sign_up/completed'
+    expect(page).to have_current_path('/sign_up/completed')
 
     click_on 'Continue'
 
-    expect(current_url).to match(%r{https://sp})
+    expect(page).to have_content('SAML Rails Example')
     expect(page).to have_content(email_address)
+    expect(current_url).to match(%r{https://sp})
   end
 end
