@@ -28,6 +28,13 @@ module SpHelpers
     expect(current_url).to match(%r{https://(idp|secure)\..*\.gov})
   end
 
+  def visit_idp_from_saml_sp_with_ial2
+    visit saml_sp_url + '?ial=2'
+    find(:css, '.sign-in-bttn').click
+
+    expect(current_url).to match(%r{https://(idp|secure)\..*\.gov})
+  end
+
   def log_out_from_oidc_sp
     if oidc_sp_is_usajobs?
       within('.usajobs-home__title') do
