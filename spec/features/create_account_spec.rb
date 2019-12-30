@@ -23,7 +23,9 @@ describe 'create account' do
 
       log_out_from_oidc_sp
     end
+  end
 
+  context 'OIDC', if: lower_env == 'INT' do
     it 'creates new IAL2 account with SMS option for 2FA' do
       visit_idp_from_oidc_sp_with_ial2
       verify_identity_with_doc_auth
