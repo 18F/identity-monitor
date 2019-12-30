@@ -14,11 +14,11 @@ module IdvHelpers
     click_on 'Use your computer'
     expect(page).to have_current_path('/verify/doc_auth/front_image')
 
-    attach_file 'doc_auth_image', File.expand_path('spec/fixtures/mont-front.jpeg')
+    attach_file 'doc_auth_image', File.expand_path('spec/fixtures/ial2_test_credential.yml')
     click_on 'Continue'
     expect(page).to have_current_path('/verify/doc_auth/back_image')
 
-    attach_file 'doc_auth_image', File.expand_path('spec/fixtures/mont-back.jpeg')
+    attach_file 'doc_auth_image', File.expand_path('spec/fixtures/ial2_test_credential.yml')
     click_on 'Continue'
     expect(page).to have_current_path('/verify/doc_auth/ssn')
 
