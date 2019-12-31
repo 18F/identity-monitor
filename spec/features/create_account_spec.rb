@@ -25,6 +25,16 @@ describe 'create account' do
     end
   end
 
+  context 'OIDC', if: lower_env == 'INT' do
+    it 'creates new IAL2 account with SMS option for 2FA' do
+      visit_idp_from_oidc_sp_with_ial2
+      verify_identity_with_doc_auth
+      expect_user_is_redirected_to_oidc_sp
+
+      log_out_from_oidc_sp
+    end
+  end
+
   context 'SAML', if: lower_env == 'INT' do
     it 'creates new account with SMS option for 2FA' do
       visit_idp_from_saml_sp
@@ -41,6 +51,14 @@ describe 'create account' do
       click_on 'Create an account'
       create_new_account_with_totp
 
+      expect_user_is_redirected_to_saml_sp
+
+      log_out_from_saml_sp
+    end
+
+    it 'creates new IAL2 account with SMS option for 2FA' do
+      visit_idp_from_saml_sp_with_ial2
+      verify_identity_with_doc_auth
       expect_user_is_redirected_to_saml_sp
 
       log_out_from_saml_sp

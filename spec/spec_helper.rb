@@ -41,6 +41,7 @@ RSpec.configure do |config|
 
   config.include GmailHelpers
   config.include IdpHelpers
+  config.include IdvHelpers
   config.include SpHelpers
 
   config.before(:each) do
