@@ -4,7 +4,7 @@ describe 'SP initiated sign in' do
   before { inbox_clear }
 
   context 'OIDC', unless: lower_env == 'STAGING' do
-    xit 'redirects back to SP' do
+    it 'redirects back to SP' do
       visit_idp_from_oidc_sp
       creds = { email_address: EMAIL }
       sign_in_and_2fa(creds)
