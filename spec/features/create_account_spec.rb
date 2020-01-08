@@ -4,7 +4,7 @@ describe 'create account' do
   before { inbox_clear }
 
   context 'OIDC', unless: lower_env == 'STAGING' do
-    xit 'creates new account with SMS option for 2FA' do
+    it 'creates new account with SMS option for 2FA' do
       visit_idp_from_oidc_sp
       click_on 'Create an account'
       create_new_account_with_sms
@@ -14,7 +14,7 @@ describe 'create account' do
       log_out_from_oidc_sp
     end
 
-    xit 'creates new account with TOTP for 2FA' do
+    it 'creates new account with TOTP for 2FA' do
       visit_idp_from_oidc_sp
       click_on 'Create an account'
       create_new_account_with_totp
@@ -26,7 +26,7 @@ describe 'create account' do
   end
 
   context 'OIDC', if: lower_env == 'INT' do
-    xit 'creates new IAL2 account with SMS option for 2FA' do
+    it 'creates new IAL2 account with SMS option for 2FA' do
       visit_idp_from_oidc_sp_with_ial2
       verify_identity_with_doc_auth
       expect_user_is_redirected_to_oidc_sp
