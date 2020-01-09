@@ -31,7 +31,7 @@ module IdpHelpers
     secret = find('#qr-code').text
     # We can remove the `if page.find('#name')` on the next line once the code
     # for supporting multiple TOTP apps is deployed all the way to prod
-    fill_in 'name', with: 'Authentication app' if page.find('#name')
+    fill_in 'name', with: 'Authentication app' if page.has_css?('#name')
     fill_in 'code', with: generate_totp_code(secret)
     click_button 'Submit'
     click_on 'Continue'
