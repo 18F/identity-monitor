@@ -14,7 +14,7 @@ describe 'SP initiated sign in' do
         expect(current_url).to match(%r{https://.*usajobs\.gov})
       else
         expect(page).to have_content('OpenID Connect Sinatra Example')
-        expect(current_url).to match(%r{https://sp-oidc-sinatra})
+        expect(current_url).to match(%r{https:\/\/(sp|\w+-identity)\-oidc\-sinatra})
       end
 
       log_out_from_oidc_sp
