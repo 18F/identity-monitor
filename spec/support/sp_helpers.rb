@@ -46,7 +46,6 @@ module SpHelpers
 
   def log_out_from_saml_sp
     click_on 'Log out'
-    expect(page).to have_content 'Logout successful'
     expect(current_url).to match saml_sp_url
   end
 end
