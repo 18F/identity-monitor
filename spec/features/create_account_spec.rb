@@ -84,8 +84,8 @@ describe 'create account' do
 
     click_on 'Continue'
 
-    expect(page).to have_content('SAML Rails Example')
+    expect(page).to have_content('SAML Sinatra Example')
     expect(page).to have_content(email_address)
-    expect(current_url).to match(%r{https://sp})
+    expect(current_url).to match(%r{#{saml_sp_url}})
   end
 end

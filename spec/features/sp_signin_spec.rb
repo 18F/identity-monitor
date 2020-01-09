@@ -27,9 +27,9 @@ describe 'SP initiated sign in' do
       creds = { email_address: EMAIL }
       sign_in_and_2fa(creds)
 
-      expect(page).to have_content('SAML Rails Example')
+      expect(page).to have_content('SAML Sinatra Example')
       expect(page).to have_content(EMAIL)
-      expect(current_url).to match(%r{https://sp})
+      expect(current_url).to match(%r{#{saml_sp_url}})
 
       log_out_from_saml_sp
     end
