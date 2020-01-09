@@ -56,7 +56,7 @@ describe 'create account' do
       log_out_from_saml_sp
     end
 
-    it 'creates new IAL2 account with SMS option for 2FA' do
+    xit 'creates new IAL2 account with SMS option for 2FA' do
       visit_idp_from_saml_sp_with_ial2
       verify_identity_with_doc_auth
       expect_user_is_redirected_to_saml_sp
@@ -75,7 +75,7 @@ describe 'create account' do
       expect(current_url).to match(%r{https://.*usajobs\.gov})
     else
       expect(page).to have_content('OpenID Connect Sinatra Example')
-      expect(current_url).to match(%r{https://sp\-oidc\-sinatra})
+      expect(current_url).to match(%r{https:\/\/(sp|\w+-identity)\-oidc\-sinatra})
     end
   end
 
