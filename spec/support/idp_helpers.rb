@@ -17,6 +17,7 @@ module IdpHelpers
     click_send_otp
     otp = check_for_otp
     fill_in 'code', with: otp
+    uncheck 'Remember this browser'
     click_on 'Submit'
     click_on 'Continue'
     setup_backup_codes
@@ -67,6 +68,7 @@ module IdpHelpers
     fill_in 'user_password', with: PASSWORD
     click_on 'Sign In'
     fill_in 'code', with: check_for_otp
+    uncheck 'Remember this browser'
     click_on 'Submit'
   end
 end
