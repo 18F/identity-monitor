@@ -12,7 +12,8 @@ module IdpHelpers
 
   def create_new_account_with_sms
     create_new_account_up_until_password
-    click_on 'Continue' # choose default SMS option
+    find("label[for='two_factor_options_form_selection_phone']").click
+    click_on 'Continue'
     fill_in 'new_phone_form_phone', with: GOOGLE_VOICE_PHONE
     click_send_otp
     otp = check_for_otp
