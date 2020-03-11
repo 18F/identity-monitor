@@ -68,11 +68,7 @@ describe 'create account' do
   def expect_user_is_redirected_to_oidc_sp
     expect(page).to have_current_path('/sign_up/completed')
 
-    if page.has_link?('Agree and continue')
-      click_on 'Agree and continue'
-    elsif page.has_link?('Accept and continue')
-      click_on 'Accept and continue'
-    end
+    click_on 'Agree and continue'
 
     if oidc_sp_is_usajobs?
       expect(page).to have_content('Welcome ')
@@ -86,11 +82,7 @@ describe 'create account' do
   def expect_user_is_redirected_to_saml_sp
     expect(page).to have_current_path('/sign_up/completed')
 
-    if page.has_link?('Agree and continue')
-      click_on 'Agree and continue'
-    elsif page.has_link?('Accept and continue')
-      click_on 'Accept and continue'
-    end
+    click_on 'Agree and continue'
 
     expect(page).to have_content('SAML Sinatra Example')
     expect(page).to have_content(email_address)
