@@ -7,6 +7,7 @@ module IdpHelpers
     find("label[for='two_factor_options_form_selection_backup_code']").click
     click_on 'Continue'
     click_on 'Continue'
+    click_on 'Continue'
   end
 
   def create_new_account_with_sms
@@ -23,7 +24,6 @@ module IdpHelpers
       click_on 'Continue'
       setup_backup_codes
     end
-    click_on 'Continue'
     puts "created account for #{email_address}"
     { email_address: email_address }
   end
@@ -40,7 +40,6 @@ module IdpHelpers
       click_on 'Continue'
       setup_backup_codes
     end
-    click_on 'Continue'
     puts "created account for #{email_address}"
     { email_address: email_address }
   end
