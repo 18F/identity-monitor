@@ -7,7 +7,6 @@ module IdpHelpers
     find("label[for='two_factor_options_form_selection_backup_code']").click
     click_on 'Continue'
     click_on 'Continue'
-    click_on 'Continue'
   end
 
   def create_new_account_with_sms
@@ -20,8 +19,11 @@ module IdpHelpers
     fill_in 'code', with: otp
     uncheck 'Remember this browser'
     click_on 'Submit'
+    if current_path.match(/two_factor_options_success/)
+      click_on 'Continue'
+      setup_backup_codes
+    end
     click_on 'Continue'
-    setup_backup_codes
     puts "created account for #{email_address}"
     { email_address: email_address }
   end
@@ -31,13 +33,14 @@ module IdpHelpers
     find("label[for='two_factor_options_form_selection_auth_app']").click
     click_on 'Continue'
     secret = find('#qr-code').text
-    # We can remove the `if page.find('#name')` on the next line once the code
-    # for supporting multiple TOTP apps is deployed all the way to prod
-    fill_in 'name', with: 'Authentication app' if page.has_css?('#name')
+    fill_in 'name', with: 'Authentication app'
     fill_in 'code', with: generate_totp_code(secret)
     click_button 'Submit'
+    if current_path.match(/two_factor_options_success/)
+      click_on 'Continue'
+      setup_backup_codes
+    end
     click_on 'Continue'
-    setup_backup_codes
     puts "created account for #{email_address}"
     { email_address: email_address }
   end
