@@ -69,7 +69,7 @@ describe 'create account' do
     expect(page).to have_current_path('/sign_up/completed')
 
     # TODO(margolis) remove this branch after the next prod deploy
-    if page.has_link?('Continue')
+    if page.has_button?('Continue')
       click_on 'Continue' # production
     else
       click_on 'Agree and continue' # int
@@ -88,7 +88,7 @@ describe 'create account' do
     expect(page).to have_current_path('/sign_up/completed')
 
     # TODO(margolis) remove this branch after the next prod deploy
-    if page.has_link?('Continue')
+    if page.has_button?('Continue')
       click_on 'Continue' # production
     else
       click_on 'Agree and continue' # int
