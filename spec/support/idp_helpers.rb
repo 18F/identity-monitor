@@ -69,7 +69,9 @@ module IdpHelpers
   def sign_in_and_2fa(creds)
     fill_in 'user_email', with: creds[:email_address]
     fill_in 'user_password', with: PASSWORD
-    click_on 'Sign In'
+    # Once the new sign in screen has been deployed to prod (2020/04/09) this
+    # can be replaced with `click_on 'Sign in'`
+    page.find('#new_user input[type=submit]').click
     fill_in 'code', with: check_for_otp
     uncheck 'Remember this browser'
     click_on 'Submit'
