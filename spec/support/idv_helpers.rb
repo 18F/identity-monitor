@@ -11,7 +11,7 @@ module IdvHelpers
     click_on 'Continue'
     expect(page).to have_current_path('/verify/doc_auth/upload')
 
-    click_on 'Use your computer'
+    click_on 'Upload from your computer'
     expect(page).to have_current_path('/verify/doc_auth/front_image')
 
     attach_file 'doc_auth_image', File.expand_path('spec/fixtures/ial2_test_credential.txt')
