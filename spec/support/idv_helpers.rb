@@ -14,12 +14,20 @@ module IdvHelpers
     click_on 'Upload from your computer'
     expect(page).to have_current_path('/verify/doc_auth/front_image')
 
-    attach_file 'doc_auth_image', File.expand_path('spec/fixtures/ial2_test_credential.txt')
-    click_on 'Continue'
+    attach_file(
+      'doc_auth_image',
+      File.expand_path('spec/fixtures/ial2_test_credential.txt'),
+      make_visible: true,
+    )
+    page.find('#acuant-fallback-image-form button[type="submit"]').click
     expect(page).to have_current_path('/verify/doc_auth/back_image')
 
-    attach_file 'doc_auth_image', File.expand_path('spec/fixtures/ial2_test_credential.txt')
-    click_on 'Continue'
+    attach_file(
+      'doc_auth_image',
+      File.expand_path('spec/fixtures/ial2_test_credential.txt'),
+      make_visible: true,
+    )
+    page.find('#acuant-fallback-image-form button[type="submit"]').click
     expect(page).to have_current_path('/verify/doc_auth/ssn')
 
     fill_in 'doc_auth_ssn', with: '%010d' % rand(10**10)
