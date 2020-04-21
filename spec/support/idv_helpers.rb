@@ -14,20 +14,16 @@ module IdvHelpers
     click_on 'Upload from your computer'
     expect(page).to have_current_path('/verify/doc_auth/front_image')
 
-    attach_file(
-      'doc_auth_image',
-      File.expand_path('spec/fixtures/ial2_test_credential.txt'),
-      make_visible: true,
-    )
-    page.find('#acuant-fallback-image-form button[type="submit"]').click
+    click_doc_auth_fallback_link
+
+    attach_file 'doc_auth_image', File.expand_path('spec/fixtures/ial2_test_credential.txt')
+    click_on 'Continue'
     expect(page).to have_current_path('/verify/doc_auth/back_image')
 
-    attach_file(
-      'doc_auth_image',
-      File.expand_path('spec/fixtures/ial2_test_credential.txt'),
-      make_visible: true,
-    )
-    page.find('#acuant-fallback-image-form button[type="submit"]').click
+    click_doc_auth_fallback_link
+
+    attach_file 'doc_auth_image', File.expand_path('spec/fixtures/ial2_test_credential.txt')
+    click_on 'Continue'
     expect(page).to have_current_path('/verify/doc_auth/ssn')
 
     fill_in 'doc_auth_ssn', with: '%010d' % rand(10**10)
@@ -55,5 +51,12 @@ module IdvHelpers
     click_on 'Continue', class: 'personal-key-continue'
     fill_in 'personal_key', with: code_words.join('-').downcase + extra_characters_get_ignored
     click_on 'Continue', class: 'personal-key-confirm'
+  end
+
+  def click_doc_auth_fallback_link
+    if !page.has_css?('#doc_auth_image', visible: true)
+      fallback_link = page.find('#acuant-fallback-link', wait: 7)
+      fallback_link.click if fallback_link
+    end
   end
 end
