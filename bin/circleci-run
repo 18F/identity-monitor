@@ -1,25 +1,52 @@
 #!/usr/bin/env ruby
 
-##
-# There are lots of moving parts so the tests can be flaky.
-# For better or worse we only sound the alarm if we fail after 3 tries.
-#
-def run_and_retry_tests(environment)
-  result = system "HEADLESS_BROWSER=true LOWER_ENV=#{environment} bundle exec rspec"
-  return if result
+require 'optparse'
 
-  2.times do
+def run_and_retry_tests(environment, retries)
+  extra_flags = ''
+  retries.times do
+    return if system "HEADLESS_BROWSER=true LOWER_ENV=#{environment} bundle exec rspec#{extra_flags}"
+
     puts "Smoke tests failed in #{environment}. Retrying..."
-    return if system "HEADLESS_BROWSER=true LOWER_ENV=#{environment} bundle exec rspec --only-failure"
+    extra_flags = ' --only-failure'
   end
   raise "Tests failed in #{environment}"
 end
 
-puts 'Running tests in INT'
-run_and_retry_tests('int')
+def main
+  basename = File.basename($PROGRAM_NAME)
+  retries = 3
 
-puts 'Running tests in STAGING'
-run_and_retry_tests('staging')
+  optparse = OptionParser.new do |opts|
+    opts.banner = <<~USAGEDOC
+      usage: #{basename} [-r NUM] ENVIRONMENT
 
-puts 'Renning tests in PROD'
-run_and_retry_tests('prod')
+      Run smoke tests for a given environment.  (Intended for pipeline use.)
+
+      Args:
+          ENVIRONMENT Target to test.  Sets "LOWER_ENV" in the rspec test.
+                      Environment variables for the target must be present.
+
+    USAGEDOC
+
+    opts.on('-r NUM', Integer, 'Times to retry test.  (Default: 3)') do |r|
+      retries = r
+    end
+  end
+
+  args = optparse.parse!
+
+  if args.length != 1
+    warn optparse
+    exit 1
+  end
+
+  env = ARGV[0]
+
+  puts "Running tests in #{env}"
+  run_and_retry_tests(env, retries)
+end
+
+if __FILE__ == $PROGRAM_NAME
+  main
+end
