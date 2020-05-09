@@ -66,7 +66,7 @@ workflows:
   # smoketest_dev:
   #   triggers:
   #     - schedule:
-  #         cron: "15 * * * *"
+  #         cron: "20 * * * *"
   #         filters:
   #           branches:
   #             only:
@@ -81,7 +81,7 @@ workflows:
   smoketest_int:
     triggers:
       - schedule:
-          cron: "20 * * * *"
+          cron: "30 * * * *"
           filters:
             branches:
               only:
@@ -93,7 +93,7 @@ workflows:
   smoketest_staging:
     triggers:
       - schedule:
-          cron: "25 * * * *"
+          cron: "40 * * * *"
           filters:
             branches:
               only:
@@ -105,7 +105,7 @@ workflows:
   smoketest_prod:
     triggers:
       - schedule:
-          cron: "30 * * * *"
+          cron: "50 * * * *"
           filters:
             branches:
               only:
