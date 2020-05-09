@@ -3,12 +3,17 @@
 require 'optparse'
 
 def run_and_retry_tests(environment, retries)
-  extra_flags = ''
+  cmd = ['HEADLESS_BROWSER=true', "LOWER_ENV=#{environment}", 'bundle', 'exec',
+         'rspec']
+  retry_flags = ['--only-failure']
+
   retries.times do
-    return if system "HEADLESS_BROWSER=true LOWER_ENV=#{environment} bundle exec rspec#{extra_flags}"
+    return if system cmd.join(' ')
 
     puts "Smoke tests failed in #{environment}. Retrying..."
-    extra_flags = ' --only-failure'
+
+    # Retries use '--only-failure' to skip over previous sucessful tests
+    retry_flags.empty? or cmd << retry_flags.shift
   end
   raise "Tests failed in #{environment}"
 end
@@ -29,7 +34,8 @@ def main
 
     USAGEDOC
 
-    opts.on('-r NUM', Integer, 'Times to retry test.  (Default: 3)') do |r|
+    opts.on('-r', '--retry-count NUM', Integer,
+            'Times to retry test.  (Default: 3)') do |r|
       retries = r
     end
   end
