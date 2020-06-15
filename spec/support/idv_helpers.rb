@@ -11,12 +11,16 @@ module IdvHelpers
     click_on 'Continue'
     expect(page).to have_current_path('/verify/doc_auth/upload')
 
-    click_on 'Use your computer'
+    click_on 'Upload from your computer'
     expect(page).to have_current_path('/verify/doc_auth/front_image')
+
+    click_doc_auth_fallback_link
 
     attach_file 'doc_auth_image', File.expand_path('spec/fixtures/ial2_test_credential.txt')
     click_on 'Continue'
     expect(page).to have_current_path('/verify/doc_auth/back_image')
+
+    click_doc_auth_fallback_link
 
     attach_file 'doc_auth_image', File.expand_path('spec/fixtures/ial2_test_credential.txt')
     click_on 'Continue'
@@ -47,5 +51,12 @@ module IdvHelpers
     click_on 'Continue', class: 'personal-key-continue'
     fill_in 'personal_key', with: code_words.join('-').downcase + extra_characters_get_ignored
     click_on 'Continue', class: 'personal-key-confirm'
+  end
+
+  def click_doc_auth_fallback_link
+    if !page.has_css?('#doc_auth_image', visible: true)
+      fallback_link = page.find('#acuant-fallback-link', wait: 7)
+      fallback_link.click if fallback_link
+    end
   end
 end
