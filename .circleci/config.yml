@@ -1,21 +1,31 @@
-version: 2
-jobs:
-  test:
+---
+version: 2.1
+
+executors:
+  # Common container definition used by all jobs
+  ruby_browsers:
     docker:
       - image: circleci/ruby:2.5.5-browsers
+
+commands:
+  # Smoke test command template
+  smoketest:
+    parameters:
+      env:
+        type: string
     steps:
       - checkout
       - run:
           name: Setup bundler
           command: gem install bundler
-      - restore-cache:
+      - restore_cache:
           keys:
             - v2-identity-monitor-bundle-{{ checksum "Gemfile.lock" }}
       - run:
           name: Install dependencies
           command: |
             bundle install --path vendor/bundle
-      - save-cache:
+      - save_cache:
           key: v2-identity-monitor-bundle-{{ checksum "Gemfile.lock" }}
           paths:
             - vendor/bundle
@@ -23,17 +33,82 @@ jobs:
           name: Setup tests
           command: bin/circleci-setup
       - run:
-          name: Run tests
-          command: bin/circleci-run
+          name: Run smoketest suite against environment
+          command: bin/circleci-run << parameters.env >>
+
+jobs:
+  smoketest_dev:
+    executor: ruby_browsers
+    steps:
+      - smoketest:
+          env: dev
+
+  smoketest_int:
+    executor: ruby_browsers
+    steps:
+      - smoketest:
+          env: int
+
+  smoketest_staging:
+    executor: ruby_browsers
+    steps:
+      - smoketest:
+          env: staging
+
+  smoketest_prod:
+    executor: ruby_browsers
+    steps:
+      - smoketest:
+          env: prod
+
 workflows:
-   version: 2
-   hourly:
-     triggers:
-       - schedule:
-           cron: "0 * * * *"
-           filters:
-             branches:
-               only:
-                 - master
-     jobs:
-       - test
+  # DEV - Not yet ready
+  # smoketest_dev:
+  #   triggers:
+  #     - schedule:
+  #         cron: "20 * * * *"
+  #         filters:
+  #           branches:
+  #             only:
+  #               - master
+  #   jobs:
+  #     - prepare
+  #     - smoketest_dev:
+  #       requires:
+  #         - prepare
+
+  # INT
+  smoketest_int:
+    triggers:
+      - schedule:
+          cron: "30 * * * *"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - smoketest_int
+
+  # STAGING
+  smoketest_staging:
+    triggers:
+      - schedule:
+          cron: "40 * * * *"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - smoketest_staging
+
+  # PROD
+  smoketest_prod:
+    triggers:
+      - schedule:
+          cron: "50 * * * *"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - smoketest_prod
