@@ -37,9 +37,13 @@ module GmailHelpers
     }
   end
 
+  def email_subject_valid?(email)
+    email.subject == 'Confirm your email' || email.subject == 'Email not found'
+  end
+
   def current_confirmation_link
     inbox_unread.each do |email|
-      next unless email.subject == 'Confirm your email'
+      next unless email_subject_valid?(email)
       msg = email.message.parts[0].body
       url = msg.match(/(https:.+confirmation_token=[\w\-]+)/)
       if url
