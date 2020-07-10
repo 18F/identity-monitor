@@ -62,33 +62,6 @@ jobs:
           env: prod
 
 workflows:
-  # DEV - Not yet ready
-  # smoketest_dev:
-  #   triggers:
-  #     - schedule:
-  #         cron: "20 * * * *"
-  #         filters:
-  #           branches:
-  #             only:
-  #               - master
-  #   jobs:
-  #     - prepare
-  #     - smoketest_dev:
-  #       requires:
-  #         - prepare
-
-  # INT
-  smoketest_int:
-    triggers:
-      - schedule:
-          cron: "30 * * * *"
-          filters:
-            branches:
-              only:
-                - master
-    jobs:
-      - smoketest_int
-
   # STAGING
   smoketest_staging:
     triggers:
