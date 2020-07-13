@@ -8,6 +8,8 @@ describe 'SP initiated sign in' do
       visit_idp_from_oidc_sp
       creds = { email_address: EMAIL }
       sign_in_and_2fa(creds)
+      # If consent has expired, we need to click "Agree and continue"
+      click_on 'Agree and continue' if page.has_button?('Agree and continue')
 
       if oidc_sp_is_usajobs?
         expect(page).to have_content('Welcome ')
@@ -26,6 +28,9 @@ describe 'SP initiated sign in' do
       visit_idp_from_saml_sp
       creds = { email_address: EMAIL }
       sign_in_and_2fa(creds)
+
+      # If consent has expired, we need to click "Agree and continue"
+      click_on 'Agree and continue' if page.has_button?('Agree and continue')
 
       expect(page).to have_content('SAML Sinatra Example')
       expect(page).to have_content(EMAIL)
